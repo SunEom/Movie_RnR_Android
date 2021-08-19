@@ -13,6 +13,8 @@ public class MainActivity extends AppCompatActivity {
 
     ActionBar actionBar;
     Window window;
+
+    HomeFragment homeFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,8 +23,11 @@ public class MainActivity extends AppCompatActivity {
         //변수 초기화
         actionBar = getSupportActionBar();
         window = getWindow();
+        homeFragment = new HomeFragment();
 
         settingBasicUI();
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();
     }
 
     public void settingBasicUI(){
