@@ -37,7 +37,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if(viewType == 0){
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_header, parent, false);
-            return new HeaderViewHolder(itemView);
+            return new HeaderViewHolder(itemView,"Recent Postings");
         } else if( viewType == 1){
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             View itemView = inflater.inflate(R.layout.movie_item, parent, false);
