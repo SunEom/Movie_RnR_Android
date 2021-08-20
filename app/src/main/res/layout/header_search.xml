@@ -3,16 +3,5 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/search_keyword_input"
-        android:layout_width="170dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="3dp"
-        android:layout_marginRight="10dp"
-        android:hint="검색"
-        android:imeActionId="1337"
-        android:inputType="text"
-        android:imeOptions="actionDone"
-        android:backgroundTint="#E1E2E1"/>
 
 </LinearLayout>

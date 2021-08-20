@@ -1,7 +1,9 @@
 package io.github.suneom.MovieRnR;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
@@ -12,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
@@ -20,7 +23,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    ActionBar actionBar;
+    Toolbar actionBar;
     Window window;
 
     HomeFragment homeFragment;
@@ -32,22 +35,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         
         //변수 초기화
-        actionBar = getSupportActionBar();
+        actionBar = findViewById(R.id.toolbar);
         window = getWindow();
         homeFragment = MyApplication.homeFragment;
 
         settingBasicUI();
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
         View v = menu.findItem(R.id.search_bar).getActionView();
-        if(v!= null ){
+        if(v!= null){
             EditText searchKeyword = v.findViewById(R.id.search_keyword_input);
 
             if(searchKeyword != null){
@@ -62,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
                         searchFragment.setArguments(bundle);
 
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, searchFragment).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, searchFragment).commit();
 
                         return true;
                     }
@@ -77,9 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void settingBasicUI(){
 
-        // 액션바 설정
-        actionBar.setTitle("MOVIE RNR 🎬");
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#9E9E9E")));
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // Status Bar 설정
