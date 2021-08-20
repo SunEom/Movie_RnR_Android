@@ -7,7 +7,13 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,6 +36,30 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        View v = menu.findItem(R.id.search_bar).getActionView();
+        if(v!= null ){
+            EditText searchKeyword = v.findViewById(R.id.search_keyword_input);
+
+            if(searchKeyword != null){
+                searchKeyword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        Toast.makeText(getApplicationContext(),searchKeyword.getText().toString(),Toast.LENGTH_LONG).show();
+                        return true;
+                    }
+                });
+            }
+        }
+
+        return true;
+    }
+
+
 
     public void settingBasicUI(){
 
