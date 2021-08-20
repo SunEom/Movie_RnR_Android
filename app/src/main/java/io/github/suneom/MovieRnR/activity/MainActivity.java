@@ -1,27 +1,23 @@
-package io.github.suneom.MovieRnR;
+package io.github.suneom.MovieRnR.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.hardware.input.InputManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import io.github.suneom.MovieRnR.application.MyApplication;
+import io.github.suneom.MovieRnR.R;
+import io.github.suneom.MovieRnR.fragment.HomeFragment;
+import io.github.suneom.MovieRnR.recycler_view.Adapter.MovieAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     Window window;
 
     HomeFragment homeFragment;
-    SearchFragment searchFragment;
+    MovieAdapter.SearchFragment searchFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 searchFragment = null;
-                searchFragment = new SearchFragment();
+                searchFragment = new MovieAdapter.SearchFragment();
 
                 Bundle bundle = new Bundle();
                 bundle.putString("keyword", actionBar_searchBar.getText().toString());

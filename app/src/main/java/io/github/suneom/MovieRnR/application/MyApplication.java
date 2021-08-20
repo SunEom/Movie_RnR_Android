@@ -1,15 +1,12 @@
-package io.github.suneom.MovieRnR;
+package io.github.suneom.MovieRnR.application;
 
 import android.app.Application;
-import android.util.Log;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
+
+import io.github.suneom.MovieRnR.fragment.HomeFragment;
+import io.github.suneom.MovieRnR.recycler_view.Adapter.MovieAdapter;
 
 public class MyApplication extends Application {
 
@@ -22,7 +19,7 @@ public class MyApplication extends Application {
     public static RequestQueue requestQueue;
 
     public final static HomeFragment homeFragment = new HomeFragment();
-    public final static SearchFragment searchFragment = new SearchFragment();
+    public final static MovieAdapter.SearchFragment searchFragment = new MovieAdapter.SearchFragment();
 
     @Override
     public void onCreate() {
