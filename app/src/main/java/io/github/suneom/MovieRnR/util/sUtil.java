@@ -1,4 +1,4 @@
-package io.github.suneom.MovieRnR;
+package io.github.suneom.MovieRnR.util;
 
 public class sUtil {
     public static int createRandomMovieCardImageIndex(){

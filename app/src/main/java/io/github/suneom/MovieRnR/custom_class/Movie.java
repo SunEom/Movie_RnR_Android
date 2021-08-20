@@ -1,4 +1,4 @@
-package io.github.suneom.MovieRnR;
+package io.github.suneom.MovieRnR.custom_class;
 
 public class Movie {
     String title;

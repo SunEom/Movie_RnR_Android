@@ -1,9 +1,8 @@
-package io.github.suneom.MovieRnR;
+package io.github.suneom.MovieRnR.util;
 
 import android.util.Log;
 
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -14,6 +13,12 @@ import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import io.github.suneom.MovieRnR.application.MyApplication;
+import io.github.suneom.MovieRnR.custom_class.Movie;
+import io.github.suneom.MovieRnR.custom_class.MovieData;
+import io.github.suneom.MovieRnR.custom_class.PostReqResult;
+import io.github.suneom.MovieRnR.recycler_view.Adapter.MovieAdapter;
 
 public class sRequest {
     private final static String TAG = "Request";

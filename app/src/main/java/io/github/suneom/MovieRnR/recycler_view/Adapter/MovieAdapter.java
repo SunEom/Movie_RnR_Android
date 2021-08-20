@@ -1,20 +1,32 @@
-package io.github.suneom.MovieRnR;
+package io.github.suneom.MovieRnR.recycler_view.Adapter;
 
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import io.github.suneom.MovieRnR.custom_class.Movie;
+import io.github.suneom.MovieRnR.R;
+import io.github.suneom.MovieRnR.recycler_view.ViewHolder.HeaderViewHolder;
+import io.github.suneom.MovieRnR.util.sRequest;
+import io.github.suneom.MovieRnR.util.sUtil;
+
 public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     ArrayList<Movie> items = new ArrayList<Movie>();
 
-    String header_title;
+    public String header_title;
 
     int[] MovieCardImageRes = {
             R.drawable.movie_photo_1,
@@ -106,6 +118,40 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             textView_description.setText(item.getDescription());
             textView_comment_count.setText(String.valueOf(item.getCommentCount()));
             textView_rates.setText(String.valueOf(item.getRates()));
+        }
+    }
+
+    public static class SearchFragment extends Fragment {
+        private static final String TAG ="SearchFragment";
+
+        MovieAdapter adapter;
+        RecyclerView recyclerView;
+
+        String keyword;
+
+        @Nullable
+        @Override
+        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_home,container, false);
+
+            EditText editText = getActivity().findViewById(R.id.search_keyword_input);
+            keyword = getArguments().getString("keyword");
+
+            Log.d(TAG,keyword);
+
+            recyclerView = rootView.findViewById(R.id.recyclerView_home);
+            LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+            recyclerView.setLayoutManager(manager);
+
+            adapter = new MovieAdapter();
+            adapter.header_title = "Search Result for : "+keyword;
+            recyclerView.setAdapter(adapter);
+
+            if(keyword != null && !keyword.equals("")){
+                sRequest.requestSearchPostings(adapter, keyword);
+            }
+
+            return rootView;
         }
     }
 }
