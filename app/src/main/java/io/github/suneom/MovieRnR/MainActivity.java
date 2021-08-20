@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         settingBasicUI();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();
+
     }
 
     public void settingBasicUI(){
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         // 액션바 설정
         actionBar.setTitle("MOVIE RNR 🎬");
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#9E9E9E")));
-        
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // Status Bar 설정
             window.setStatusBarColor(Color.BLACK);

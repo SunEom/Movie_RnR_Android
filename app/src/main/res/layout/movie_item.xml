@@ -20,7 +20,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/imageView_movieCard"
                 android:layout_width="400dp"
                 android:layout_height="225dp"
                 app:srcCompat="@drawable/movie_photo_1" />

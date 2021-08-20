@@ -3,6 +3,7 @@ package io.github.suneom.MovieRnR;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,17 @@ import java.util.ArrayList;
 
 public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     ArrayList<Movie> items = new ArrayList<Movie>();
+
+    int[] MovieCardImageRes = {
+            R.drawable.movie_photo_1,
+            R.drawable.movie_photo_2,
+            R.drawable.movie_photo_3,
+            R.drawable.movie_photo_4,
+            R.drawable.movie_photo_5,
+            R.drawable.movie_photo_6,
+            R.drawable.movie_photo_7,
+            R.drawable.movie_photo_8,
+    };
 
     private final int TYPE_HEADER = 0;
     private final int TYPE_ITEM = 1;
@@ -70,6 +82,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
+        ImageView imageView_movieCard;
         TextView textView_title;
         TextView textView_description;
         TextView textView_comment_count;
@@ -78,6 +91,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            imageView_movieCard = itemView.findViewById(R.id.imageView_movieCard);
             textView_title = itemView.findViewById(R.id.textView_title);
             textView_description = itemView.findViewById(R.id.textView_description);
             textView_comment_count = itemView.findViewById(R.id.textView_comment_count);
@@ -85,6 +99,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
 
         public void setItem(Movie item){
+            imageView_movieCard.setImageResource(MovieCardImageRes[sUtil.createRandomMovieCardImageIndex()]);
             textView_title.setText(item.getTitle());
             textView_description.setText(item.getDescription());
             textView_comment_count.setText(String.valueOf(item.getCommentCount()));
