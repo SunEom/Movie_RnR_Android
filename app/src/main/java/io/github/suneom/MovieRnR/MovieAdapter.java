@@ -14,6 +14,8 @@ import java.util.ArrayList;
 public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     ArrayList<Movie> items = new ArrayList<Movie>();
 
+    String header_title;
+
     int[] MovieCardImageRes = {
             R.drawable.movie_photo_1,
             R.drawable.movie_photo_2,
@@ -49,7 +51,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if(viewType == 0){
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_header, parent, false);
-            return new HeaderViewHolder(itemView,"Recent Postings");
+            return new HeaderViewHolder(itemView, header_title);
         } else if( viewType == 1){
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             View itemView = inflater.inflate(R.layout.movie_item, parent, false);
