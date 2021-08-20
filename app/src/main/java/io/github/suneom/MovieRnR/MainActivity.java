@@ -2,11 +2,14 @@ package io.github.suneom.MovieRnR;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
@@ -21,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     Window window;
 
     HomeFragment homeFragment;
+    SearchFragment searchFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         //변수 초기화
         actionBar = getSupportActionBar();
         window = getWindow();
-        homeFragment = new HomeFragment();
+        homeFragment = MyApplication.homeFragment;
 
         settingBasicUI();
 
@@ -49,7 +54,16 @@ public class MainActivity extends AppCompatActivity {
                 searchKeyword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                     @Override
                     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                        Toast.makeText(getApplicationContext(),searchKeyword.getText().toString(),Toast.LENGTH_LONG).show();
+                        searchFragment = null;
+                        searchFragment = new SearchFragment();
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("keyword", searchKeyword.getText().toString());
+
+                        searchFragment.setArguments(bundle);
+
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, searchFragment).commit();
+
                         return true;
                     }
                 });

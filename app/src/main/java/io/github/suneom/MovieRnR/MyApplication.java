@@ -21,6 +21,9 @@ public class MyApplication extends Application {
 
     public static RequestQueue requestQueue;
 
+    public final static HomeFragment homeFragment = new HomeFragment();
+    public final static SearchFragment searchFragment = new SearchFragment();
+
     @Override
     public void onCreate() {
         super.onCreate();
