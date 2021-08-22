@@ -99,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
                     default:
                         break;
                 }
+
+                drawer.closeDrawer(GravityCompat.START);
                 return true;
             }
         });
