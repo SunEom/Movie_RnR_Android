@@ -94,7 +94,7 @@ public class sRequest {
         MyApplication.requestQueue.add(request);
     }
 
-    public static void requestLogin(String id, String password){
+    public static void requestLoginPost(String id, String password){
         StringRequest request = new StringRequest(Request.Method.POST, MyApplication.SERVER_URL + "auth/login",
                 new Response.Listener<String>() {
                     @Override
@@ -114,6 +114,31 @@ public class sRequest {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("id", id);
                 params.put("password",password);
+                return params;
+            }
+        };
+        request.setShouldCache(false);
+        MyApplication.requestQueue.add(request);
+    }
+
+    public static void requestLoginGet(){
+        StringRequest request = new StringRequest(Request.Method.GET, MyApplication.SERVER_URL + "auth/login",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Login", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Login", error.getMessage());
+                    }
+                }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
                 return params;
             }
         };
