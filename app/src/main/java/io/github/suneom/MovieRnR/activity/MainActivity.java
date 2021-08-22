@@ -1,18 +1,26 @@
 package io.github.suneom.MovieRnR.activity;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.material.navigation.NavigationView;
 
 import io.github.suneom.MovieRnR.application.MyApplication;
 import io.github.suneom.MovieRnR.R;
@@ -21,11 +29,21 @@ import io.github.suneom.MovieRnR.recycler_view.Adapter.MovieAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
-    Toolbar actionBar;
+    DrawerLayout drawer;
+    Toolbar toolbar;
     Window window;
 
     HomeFragment homeFragment;
     MovieAdapter.SearchFragment searchFragment;
+
+    @Override
+    public void onBackPressed() {
+        if(drawer.isDrawerOpen(GravityCompat.START)){
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +51,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         
         //변수 초기화
-        actionBar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         window = getWindow();
         homeFragment = MyApplication.homeFragment;
+        drawer = findViewById(R.id.drawer_layout);
 
         settingBasicUI();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
+
 
     }
 
@@ -47,7 +67,39 @@ public class MainActivity extends AppCompatActivity {
 
     public void settingBasicUI(){
 
-        TextView actionBar_title = actionBar.findViewById(R.id.action_bar_title);
+        setSupportActionBar(toolbar);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close); // Drawer Nav에 추가할 Toggle 버튼 생성
+        drawer.addDrawerListener(toggle); // Drawer Nav에 Toggle 버튼 추가
+        toggle.syncState();
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        //navigation 메뉴 선택시 실행되는 Listener 설정
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+
+                switch(id){
+                    case R.id.mypage:
+                        Toast.makeText(getApplicationContext(), "My Page",Toast.LENGTH_LONG).show();
+                        break;
+                    case R.id.posting:
+                        Toast.makeText(getApplicationContext(), "Posting",Toast.LENGTH_LONG).show();
+                        break;
+                    case R.id.logout:
+                        Toast.makeText(getApplicationContext(), "Log out",Toast.LENGTH_LONG).show();
+                        break;
+                    default:
+                        break;
+                }
+                return true;
+            }
+        });
+
+
+        TextView actionBar_title = toolbar.findViewById(R.id.action_bar_title);
         actionBar_title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        EditText actionBar_searchBar = actionBar.findViewById(R.id.search_keyword_input);
+        EditText actionBar_searchBar = toolbar.findViewById(R.id.search_keyword_input);
         actionBar_searchBar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
