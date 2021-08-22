@@ -25,6 +25,7 @@ import com.google.android.material.navigation.NavigationView;
 import io.github.suneom.MovieRnR.application.MyApplication;
 import io.github.suneom.MovieRnR.R;
 import io.github.suneom.MovieRnR.fragment.HomeFragment;
+import io.github.suneom.MovieRnR.fragment.LogInFragment;
 import io.github.suneom.MovieRnR.fragment.PostingFragment;
 import io.github.suneom.MovieRnR.recycler_view.Adapter.MovieAdapter;
 
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     HomeFragment homeFragment;
     MovieAdapter.SearchFragment searchFragment;
     PostingFragment postingFragment;
+    LogInFragment logInFragment;
 
     @Override
     public void onBackPressed() {
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         drawer = findViewById(R.id.drawer_layout);
 
         postingFragment = new PostingFragment();
+        logInFragment = new LogInFragment();
 
         settingBasicUI();
 
@@ -95,6 +98,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.logout:
                         Toast.makeText(getApplicationContext(), "Log out",Toast.LENGTH_LONG).show();
+                        break;
+                    case R.id.login:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, logInFragment).commit();
                         break;
                     default:
                         break;
