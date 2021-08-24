@@ -175,6 +175,7 @@
                             android:layout_marginLeft="20dp"
                             android:layout_marginRight="20dp"
                             android:background="@drawable/comment_input"
+                            android:textSize="12dp"
                             android:hint="Leave a comment..."
                             android:inputType="textMultiLine" />
 
