@@ -1,4 +1,4 @@
-package io.github.suneom.MovieRnR.custom_class;
+package io.github.suneom.MovieRnR.custom_class.Login;
 
 public class LoginUserInfo {
     public int id;

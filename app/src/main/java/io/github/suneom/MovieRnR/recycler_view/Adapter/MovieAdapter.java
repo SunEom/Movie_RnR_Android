@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import io.github.suneom.MovieRnR.custom_class.Movie;
+import io.github.suneom.MovieRnR.custom_class.Movie.Movie;
 import io.github.suneom.MovieRnR.R;
 import io.github.suneom.MovieRnR.recycler_view.ViewHolder.HeaderViewHolder;
 import io.github.suneom.MovieRnR.util.sRequest;

@@ -6,4 +6,8 @@ public class sUtil {
         int iValue = (int)(dValue * 8);
         return iValue;
     }
+
+    public static String ParseDateTilDate(String date){
+        return date.substring(0,10);
+    }
 }

@@ -1,19 +1,12 @@
 package io.github.suneom.MovieRnR.application;
 
 import android.app.Application;
-import android.content.Context;
-import android.net.wifi.hotspot2.pps.Credential;
 
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.HttpStack;
 import com.android.volley.toolbox.Volley;
 
-import io.github.suneom.MovieRnR.custom_class.LoginUserInfo;
+import io.github.suneom.MovieRnR.custom_class.Login.LoginUserInfo;
 import io.github.suneom.MovieRnR.fragment.HomeFragment;
-import io.github.suneom.MovieRnR.recycler_view.Adapter.MovieAdapter;
-import okhttp3.Authenticator;
-import okhttp3.Credentials;
-import okhttp3.OkHttpClient;
 
 public class MyApplication extends Application {
 
