@@ -184,10 +184,13 @@ public class sRequest {
 
                     Log.d("Login POST","request : " + request.toString());
                     Log.d("Login POST","Response : " + response.body().string());
+                    String result = response.body().string();
 
                     Gson gson = new Gson();
+                    HttpResponse info = gson.fromJson(result, HttpResponse.class);
 
-                    HttpResponse info = gson.fromJson(response.body().string(), HttpResponse.class);
+
+                    Log.d("Login POST", info.data.nickname);
 
                     MyApplication.my_info = info.data;
 
@@ -253,7 +256,7 @@ public class sRequest {
 
                     HttpResponse info = gson.fromJson(result, HttpResponse.class);
 
-                    MyApplication.my_info = info.data;
+                    Log.d("Login GET", info.data.nickname);
 
                 } catch(Exception e) {
                     e.printStackTrace();
@@ -263,5 +266,42 @@ public class sRequest {
 
     }
 
+    public static void requestNewPosting(String title, String genres, String rates, String overview){
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient.Builder builder = new OkHttpClient.Builder();
+                    builder.cookieJar(myCookieJar);
+                    OkHttpClient client = builder.build();
+
+                    RequestBody formBody = new FormBody.Builder()
+                            .add("title", title)
+                            .add("genres", genres)
+                            .add("rates", rates)
+                            .add("overview", overview)
+                            .build();
+
+                    String url = MyApplication.SERVER_URL+"post";
+
+                    okhttp3.Request request = new okhttp3.Request.Builder()
+                            .url(url)
+                            .post(formBody)
+                            .build();
+
+                    okhttp3.Response response = client.newCall(request).execute();
+
+
+                    Log.d("Posting POST","request : " + request.toString());
+                    Log.d("Posting POST","Response : " + response.body().string());
+
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
+    }
 
 }

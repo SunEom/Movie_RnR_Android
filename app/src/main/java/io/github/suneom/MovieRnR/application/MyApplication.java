@@ -28,6 +28,8 @@ public class MyApplication extends Application {
 
     public static LoginUserInfo my_info = null;
 
+
+
     public final static HomeFragment homeFragment = new HomeFragment();
     public final static MovieAdapter.SearchFragment searchFragment = new MovieAdapter.SearchFragment();
 
