@@ -12,6 +12,7 @@ import io.github.suneom.MovieRnR.custom_class.Detail.PostingOwner;
 import io.github.suneom.MovieRnR.custom_class.Movie.MovieData;
 import io.github.suneom.MovieRnR.recycler_view.Adapter.CommentAdapter;
 import io.github.suneom.MovieRnR.util.sRequest;
+import io.github.suneom.MovieRnR.util.sUtil;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -45,9 +46,9 @@ public class DetailActivity extends AppCompatActivity {
     public void setInfo(MovieData movie, PostingOwner owner){
         title.setText(movie.title);
         genres.setText(movie.genres);
-        rates.setText(String.valueOf(movie.rates));
+        rates.setText("⭐ " + String.valueOf(movie.rates)+"/ 10");
         overview.setText(movie.overview);
-        created.setText(movie.created);
+        created.setText(sUtil.ParseDateTilDate(movie.created));
         nickname.setText(owner.getNickname());
     }
 }
