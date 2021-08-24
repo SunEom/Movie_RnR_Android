@@ -77,7 +77,7 @@ public class sRequest {
                 if(result.code == 200){
                     for(int i=0; i<result.data.size(); i++){
                         MovieData data = result.data.get(i);
-                        adapter.addItem(new Movie(data.title, data.genres, data.overview, data.rates, data.commentCount));
+                        adapter.addItem(new Movie(data.id, data.title, data.genres, data.overview, data.rates, data.commentCount));
                     }
                     adapter.notifyDataSetChanged();
                 }
@@ -107,7 +107,7 @@ public class sRequest {
                 if(result.code == 200){
                     for(int i=0; i<result.data.size(); i++){
                         MovieData data = result.data.get(i);
-                        adapter.addItem(new Movie(data.title, data.genres, data.overview, data.rates, data.commentCount));
+                        adapter.addItem(new Movie(data.id, data.title, data.genres, data.overview, data.rates, data.commentCount));
                     }
                     adapter.notifyDataSetChanged();
                 }

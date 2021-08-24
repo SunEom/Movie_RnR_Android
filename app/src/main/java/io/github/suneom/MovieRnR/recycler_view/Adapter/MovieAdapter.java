@@ -17,14 +17,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import io.github.suneom.MovieRnR.Listener.OnMovieItemClickListener;
 import io.github.suneom.MovieRnR.custom_class.Movie.Movie;
 import io.github.suneom.MovieRnR.R;
 import io.github.suneom.MovieRnR.recycler_view.ViewHolder.HeaderViewHolder;
 import io.github.suneom.MovieRnR.util.sRequest;
 import io.github.suneom.MovieRnR.util.sUtil;
 
-public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements OnMovieItemClickListener{
     ArrayList<Movie> items = new ArrayList<Movie>();
+    OnMovieItemClickListener listener;
 
     public String header_title;
 
@@ -67,7 +69,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         } else if( viewType == 1){
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             View itemView = inflater.inflate(R.layout.movie_item, parent, false);
-            return new ViewHolder(itemView);
+            return new ViewHolder(itemView, (OnMovieItemClickListener) this);
         }
         return null;
     }
@@ -85,6 +87,17 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return items.size() + 1;
     }
 
+    public void setOnItemClickListener(OnMovieItemClickListener listener){
+        this.listener = listener;
+    }
+
+    @Override
+    public void onItemClick(ViewHolder holder, View view, int position) {
+        if(listener != null){
+            listener.onItemClick(holder, view, position);
+        }
+    }
+
     @Override
     public int getItemViewType(int position) {
         if(position == 0){
@@ -96,13 +109,14 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
+        public int id;
         ImageView imageView_movieCard;
         TextView textView_title;
         TextView textView_description;
         TextView textView_comment_count;
         TextView textView_rates;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, final OnMovieItemClickListener listener) {
             super(itemView);
 
             imageView_movieCard = itemView.findViewById(R.id.imageView_movieCard);
@@ -110,9 +124,21 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             textView_description = itemView.findViewById(R.id.textView_description);
             textView_comment_count = itemView.findViewById(R.id.textView_comment_count);
             textView_rates = itemView.findViewById(R.id.textView_rates);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+
+                    if(listener != null){
+                        listener.onItemClick(ViewHolder.this, v, position);
+                    }
+                }
+            });
         }
 
         public void setItem(Movie item){
+            id = item.getId();
             imageView_movieCard.setImageResource(MovieCardImageRes[sUtil.createRandomMovieCardImageIndex()]);
             textView_title.setText(item.getTitle());
             textView_description.setText(item.getDescription());
