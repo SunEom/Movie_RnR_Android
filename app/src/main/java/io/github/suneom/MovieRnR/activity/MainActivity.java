@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details);
+        setContentView(R.layout.activity_main);
         
         //변수 초기화
         toolbar = findViewById(R.id.toolbar);
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
         settingBasicUI();
 
-//        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
 
 
     }

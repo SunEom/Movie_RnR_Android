@@ -84,6 +84,7 @@
                             android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/detail_title"
                                 android:layout_marginTop="20dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -102,6 +103,7 @@
                                 android:paddingRight="20dp">
 
                                 <TextView
+                                    android:id="@+id/detail_genres"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
@@ -109,6 +111,7 @@
                                     android:text="Action, Drama"/>
 
                                 <TextView
+                                    android:id="@+id/detail_rates"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
@@ -118,6 +121,7 @@
                             </LinearLayout>
 
                             <TextView
+                                android:id="@+id/detail_overview"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="20dp"
@@ -138,12 +142,14 @@
                                 android:paddingRight="20dp">
 
                                 <TextView
+                                    android:id="@+id/detail_createdAt"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:text="2021-02-22"/>
 
                                 <TextView
+                                    android:id="@+id/detail_createdBy"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
@@ -163,6 +169,7 @@
                         app:cardCornerRadius="10dp">
 
                         <EditText
+                            android:id="@+id/comment_input"
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
                             android:layout_marginLeft="20dp"
@@ -173,6 +180,7 @@
 
                     </androidx.cardview.widget.CardView>
                     <Button
+                        android:id="@+id/comment_button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="15dp"
@@ -189,7 +197,16 @@
                         android:layout_marginTop="30dp"
                         android:textColor="@color/black"/>
 
+                    <TextView
+                        android:id="@+id/comment_empty_alert"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:text="There is no comment.."/>
+
                     <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView_comment"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
