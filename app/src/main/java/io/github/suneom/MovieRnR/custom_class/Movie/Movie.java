@@ -1,18 +1,28 @@
 package io.github.suneom.MovieRnR.custom_class.Movie;
 
 public class Movie {
+    int id;
     String title;
     String genres;
     String description;
     float rates;
     int commentCount;
 
-    public Movie(String title, String genres, String description, float rates, int commentCount) {
+    public Movie(int id, String title, String genres, String description, float rates, int commentCount) {
+        this.id = id;
         this.title = title;
         this.genres = genres;
         this.description = description;
         this.rates = rates;
         this.commentCount = commentCount;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {

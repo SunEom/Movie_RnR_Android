@@ -65,7 +65,7 @@ public class sRequest {
 
     //Posting 관련 Method
 
-    public static void requestRecentPostings(MovieAdapter adapter){
+    public static void requestRecentPostings(MovieAdapter adapter, Activity activity){
         StringRequest request = new StringRequest(Request.Method.GET, MyApplication.SERVER_URL+"post"
                 , new Response.Listener<String>() {
             @Override
@@ -77,9 +77,12 @@ public class sRequest {
                 if(result.code == 200){
                     for(int i=0; i<result.data.size(); i++){
                         MovieData data = result.data.get(i);
-                        adapter.addItem(new Movie(data.title, data.genres, data.overview, data.rates, data.commentCount));
+                        adapter.addItem(new Movie(data.id, data.title, data.genres, data.overview, data.rates, data.commentCount));
                     }
                     adapter.notifyDataSetChanged();
+
+                    activity.findViewById(R.id.home_progressBar).setVisibility(View.GONE);
+                    activity.findViewById(R.id.recyclerView_home).setVisibility(View.VISIBLE);
                 }
 
             }
@@ -107,7 +110,7 @@ public class sRequest {
                 if(result.code == 200){
                     for(int i=0; i<result.data.size(); i++){
                         MovieData data = result.data.get(i);
-                        adapter.addItem(new Movie(data.title, data.genres, data.overview, data.rates, data.commentCount));
+                        adapter.addItem(new Movie(data.id, data.title, data.genres, data.overview, data.rates, data.commentCount));
                     }
                     adapter.notifyDataSetChanged();
                 }
@@ -191,12 +194,13 @@ public class sRequest {
                     Gson gson = new Gson();
                     DetailResponse info = gson.fromJson(result, DetailResponse.class);
 
-                    Log.d("POSTING DETAIL", result);
-
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             ((DetailActivity) activity).setInfo(info.getData().getMovie(), info.getData().getUser());
+
+                            activity.findViewById(R.id.detail_progressBar).setVisibility(View.GONE);
+                            activity.findViewById(R.id.content_scrollView).setVisibility(View.VISIBLE);
                         }
                     });
 
@@ -289,7 +293,7 @@ public class sRequest {
                     e.printStackTrace();
                 }
             }
-        })
+        }).start();
     }
 
     //Authentication 관련 Method

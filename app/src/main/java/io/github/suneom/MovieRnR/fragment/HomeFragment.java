@@ -1,9 +1,11 @@
 package io.github.suneom.MovieRnR.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,6 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import io.github.suneom.MovieRnR.Listener.OnMovieItemClickListener;
+import io.github.suneom.MovieRnR.activity.DetailActivity;
 import io.github.suneom.MovieRnR.recycler_view.Adapter.MovieAdapter;
 import io.github.suneom.MovieRnR.R;
 import io.github.suneom.MovieRnR.util.sRequest;
@@ -32,9 +36,18 @@ public class HomeFragment extends Fragment {
 
         adapter = new MovieAdapter();
         adapter.header_title = "Recent Postings";
+        adapter.setOnItemClickListener(new OnMovieItemClickListener() {
+            @Override
+            public void onItemClick(MovieAdapter.ViewHolder holder, View view, int position) {
+                Intent intent = new Intent(getContext(), DetailActivity.class);
+                intent.putExtra("id", holder.id);
+                startActivity(intent);
+            }
+        });
+
         recyclerView.setAdapter(adapter);
 
-        sRequest.requestRecentPostings(adapter);
+        sRequest.requestRecentPostings(adapter, getActivity());
 
         return rootView;
     }
