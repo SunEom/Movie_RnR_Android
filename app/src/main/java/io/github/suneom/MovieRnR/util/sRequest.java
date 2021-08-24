@@ -184,10 +184,13 @@ public class sRequest {
 
                     Log.d("Login POST","request : " + request.toString());
                     Log.d("Login POST","Response : " + response.body().string());
+                    String result = response.body().string();
 
                     Gson gson = new Gson();
+                    HttpResponse info = gson.fromJson(result, HttpResponse.class);
 
-                    HttpResponse info = gson.fromJson(response.body().string(), HttpResponse.class);
+
+                    Log.d("Login POST", info.data.nickname);
 
                     MyApplication.my_info = info.data;
 
@@ -253,7 +256,7 @@ public class sRequest {
 
                     HttpResponse info = gson.fromJson(result, HttpResponse.class);
 
-                    MyApplication.my_info = info.data;
+                    Log.d("Login GET", info.data.nickname);
 
                 } catch(Exception e) {
                     e.printStackTrace();
@@ -280,10 +283,9 @@ public class sRequest {
                             .add("overview", overview)
                             .build();
 
-                    String url = MyApplication.SERVER_URL+"auth/login";
+                    String url = MyApplication.SERVER_URL+"post";
 
                     okhttp3.Request request = new okhttp3.Request.Builder()
-//                            .addHeader("Authorization", Credentials.basic(MyApplication.my))
                             .url(url)
                             .post(formBody)
                             .build();
