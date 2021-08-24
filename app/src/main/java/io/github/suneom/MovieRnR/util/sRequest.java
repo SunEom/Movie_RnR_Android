@@ -22,13 +22,15 @@ import java.util.List;
 import java.util.Map;
 
 import io.github.suneom.MovieRnR.R;
+import io.github.suneom.MovieRnR.activity.DetailActivity;
 import io.github.suneom.MovieRnR.activity.MainActivity;
 import io.github.suneom.MovieRnR.application.MyApplication;
-import io.github.suneom.MovieRnR.custom_class.HttpResponse.CommentHttpResponse;
-import io.github.suneom.MovieRnR.custom_class.HttpResponse.LoginHttpResponse;
-import io.github.suneom.MovieRnR.custom_class.Movie;
-import io.github.suneom.MovieRnR.custom_class.MovieData;
-import io.github.suneom.MovieRnR.custom_class.PostReqResult;
+import io.github.suneom.MovieRnR.custom_class.Comment.CommentResponse;
+import io.github.suneom.MovieRnR.custom_class.Detail.DetailResponse;
+import io.github.suneom.MovieRnR.custom_class.Login.LoginResponse;
+import io.github.suneom.MovieRnR.custom_class.Movie.Movie;
+import io.github.suneom.MovieRnR.custom_class.Movie.MovieData;
+import io.github.suneom.MovieRnR.custom_class.Movie.PostReqResult;
 import io.github.suneom.MovieRnR.recycler_view.Adapter.CommentAdapter;
 import io.github.suneom.MovieRnR.recycler_view.Adapter.MovieAdapter;
 import okhttp3.Cookie;
@@ -167,6 +169,44 @@ public class sRequest {
         }).start();
     }
 
+    public static void requestPostingDetail(int posting_id, Activity activity){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient.Builder builder = new OkHttpClient.Builder();
+                    builder.cookieJar(myCookieJar);
+                    OkHttpClient client = builder.build();
+
+                    String url = MyApplication.SERVER_URL+"post"+"/"+posting_id;
+
+                    okhttp3.Request request = new okhttp3.Request.Builder()
+                            .url(url)
+                            .build();
+
+                    okhttp3.Response response = client.newCall(request).execute();
+
+                    String result = response.body().string();
+
+                    Gson gson = new Gson();
+                    DetailResponse info = gson.fromJson(result, DetailResponse.class);
+
+                    Log.d("POSTING DETAIL", result);
+
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((DetailActivity) activity).setInfo(info.getData().getMovie(), info.getData().getUser());
+                        }
+                    });
+
+                } catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
     //Comment 관련 Method
 
     public static void requestCommentList(CommentAdapter adapter, int posting_id, Activity activity){
@@ -191,7 +231,7 @@ public class sRequest {
                     String result = response.body().string();
 
                     Gson gson = new Gson();
-                    CommentHttpResponse info = gson.fromJson(result, CommentHttpResponse.class);
+                    CommentResponse info = gson.fromJson(result, CommentResponse.class);
 
                     // MainThread에서만 View를 조작할 수 있기때문에 다음과 같이 activity를 가져와서 MainThread에서 recycler view를 조작한다.
                     activity.runOnUiThread(new Runnable() {
@@ -250,7 +290,7 @@ public class sRequest {
                     String result = response.body().string();
 
                     Gson gson = new Gson();
-                    LoginHttpResponse info = gson.fromJson(result, LoginHttpResponse.class);
+                    LoginResponse info = gson.fromJson(result, LoginResponse.class);
 
 
                     MyApplication.my_info = info.data;
@@ -288,7 +328,7 @@ public class sRequest {
 
                     Gson gson = new Gson();
 
-                    LoginHttpResponse info = gson.fromJson(result, LoginHttpResponse.class);
+                    LoginResponse info = gson.fromJson(result, LoginResponse.class);
                 } catch(Exception e) {
                     e.printStackTrace();
                 }

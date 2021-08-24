@@ -3,7 +3,6 @@ package io.github.suneom.MovieRnR.recycler_view.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import io.github.suneom.MovieRnR.R;
-import io.github.suneom.MovieRnR.custom_class.Comment;
+import io.github.suneom.MovieRnR.custom_class.Comment.Comment;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Viewholder> {
 
