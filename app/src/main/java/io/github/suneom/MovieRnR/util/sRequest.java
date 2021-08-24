@@ -191,8 +191,6 @@ public class sRequest {
                     Gson gson = new Gson();
                     DetailResponse info = gson.fromJson(result, DetailResponse.class);
 
-                    Log.d("POSTING DETAIL", result);
-
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

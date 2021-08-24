@@ -4,8 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import io.github.suneom.MovieRnR.R;
 import io.github.suneom.MovieRnR.custom_class.Detail.PostingOwner;
@@ -24,6 +27,10 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
+        int id = getIntent().getIntExtra("id",-1);
+
+        Log.d("MOVIE", String.valueOf(id));
+
         recyclerView = findViewById(R.id.recyclerView_comment);
         LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(manager);
@@ -39,8 +46,13 @@ public class DetailActivity extends AppCompatActivity {
         created = findViewById(R.id.detail_createdAt);
         nickname = findViewById(R.id.detail_createdBy);
 
-        sRequest.requestCommentList(adapter,1, this);
-        sRequest.requestPostingDetail(1, this);
+        sRequest.requestCommentList(adapter, id, this);
+        sRequest.requestPostingDetail(id, this);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
     }
 
     public void setInfo(MovieData movie, PostingOwner owner){

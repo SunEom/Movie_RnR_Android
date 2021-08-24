@@ -39,8 +39,8 @@ public class HomeFragment extends Fragment {
         adapter.setOnItemClickListener(new OnMovieItemClickListener() {
             @Override
             public void onItemClick(MovieAdapter.ViewHolder holder, View view, int position) {
-                Toast.makeText(getContext(), String.valueOf(holder.id),Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getContext(), DetailActivity.class);
+                intent.putExtra("id", holder.id);
                 startActivity(intent);
             }
         });
