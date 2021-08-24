@@ -1,5 +1,7 @@
 package io.github.suneom.MovieRnR.util;
 
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -17,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.github.suneom.MovieRnR.activity.MainActivity;
 import io.github.suneom.MovieRnR.application.MyApplication;
 import io.github.suneom.MovieRnR.custom_class.HttpResponse;
 import io.github.suneom.MovieRnR.custom_class.LoginUserInfo;
@@ -125,7 +128,7 @@ public class sRequest {
         MyApplication.requestQueue.add(request);
     }
 
-    public static void requestLoginPost(String id, String password){
+    public static void requestLoginPost(String id, String password, Context context){
 
         new Thread(new Runnable() {
 
@@ -160,6 +163,9 @@ public class sRequest {
 
                     MyApplication.my_info = info.data;
 
+                    Intent intent = new Intent(context, MainActivity.class);
+                    context.startActivity(intent);
+
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
@@ -168,7 +174,7 @@ public class sRequest {
         }).start();
     }
 
-    public static void requestLoginGet(){
+    public static void requestLoginGet(Context context){
         new Thread(new Runnable() {
             @Override
             public void run() {
