@@ -304,4 +304,34 @@ public class sRequest {
         }).start();
     }
 
+
+    public static void requestLogout(){
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient.Builder builder = new OkHttpClient.Builder();
+                    builder.cookieJar(myCookieJar);
+                    OkHttpClient client = builder.build();
+
+                    String url = MyApplication.SERVER_URL+"auth/logout";
+
+                    okhttp3.Request request = new okhttp3.Request.Builder()
+                            .url(url)
+                            .build();
+
+                    okhttp3.Response response = client.newCall(request).execute();
+
+
+                    Log.d("Logout","request : " + request.toString());
+                    Log.d("Logout","Response : " + response.body().string());
+
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
+    }
 }

@@ -28,6 +28,7 @@ import io.github.suneom.MovieRnR.fragment.HomeFragment;
 import io.github.suneom.MovieRnR.fragment.LogInFragment;
 import io.github.suneom.MovieRnR.fragment.PostingFragment;
 import io.github.suneom.MovieRnR.recycler_view.Adapter.MovieAdapter;
+import io.github.suneom.MovieRnR.util.sRequest;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -98,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.logout:
                         Toast.makeText(getApplicationContext(), "Log out",Toast.LENGTH_LONG).show();
+                        sRequest.requestLogout();
                         break;
                     case R.id.login:
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, logInFragment).commit();
