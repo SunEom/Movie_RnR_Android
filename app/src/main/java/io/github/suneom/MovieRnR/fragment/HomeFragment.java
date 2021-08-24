@@ -47,7 +47,7 @@ public class HomeFragment extends Fragment {
 
         recyclerView.setAdapter(adapter);
 
-        sRequest.requestRecentPostings(adapter);
+        sRequest.requestRecentPostings(adapter, getActivity());
 
         return rootView;
     }

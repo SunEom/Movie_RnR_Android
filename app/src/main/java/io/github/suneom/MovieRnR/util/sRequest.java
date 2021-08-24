@@ -65,7 +65,7 @@ public class sRequest {
 
     //Posting 관련 Method
 
-    public static void requestRecentPostings(MovieAdapter adapter){
+    public static void requestRecentPostings(MovieAdapter adapter, Activity activity){
         StringRequest request = new StringRequest(Request.Method.GET, MyApplication.SERVER_URL+"post"
                 , new Response.Listener<String>() {
             @Override
@@ -80,6 +80,9 @@ public class sRequest {
                         adapter.addItem(new Movie(data.id, data.title, data.genres, data.overview, data.rates, data.commentCount));
                     }
                     adapter.notifyDataSetChanged();
+
+                    activity.findViewById(R.id.home_progressBar).setVisibility(View.GONE);
+                    activity.findViewById(R.id.recyclerView_home).setVisibility(View.VISIBLE);
                 }
 
             }
@@ -195,6 +198,9 @@ public class sRequest {
                         @Override
                         public void run() {
                             ((DetailActivity) activity).setInfo(info.getData().getMovie(), info.getData().getUser());
+
+                            activity.findViewById(R.id.detail_progressBar).setVisibility(View.GONE);
+                            activity.findViewById(R.id.content_scrollView).setVisibility(View.VISIBLE);
                         }
                     });
 

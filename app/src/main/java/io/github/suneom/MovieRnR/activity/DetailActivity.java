@@ -29,8 +29,6 @@ public class DetailActivity extends AppCompatActivity {
 
         int id = getIntent().getIntExtra("id",-1);
 
-        Log.d("MOVIE", String.valueOf(id));
-
         recyclerView = findViewById(R.id.recyclerView_comment);
         LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(manager);
