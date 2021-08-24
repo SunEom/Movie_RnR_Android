@@ -1,22 +1,20 @@
 package io.github.suneom.MovieRnR.util;
 
-import android.media.session.MediaSessionManager;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.github.suneom.MovieRnR.application.MyApplication;
@@ -24,16 +22,36 @@ import io.github.suneom.MovieRnR.custom_class.Movie;
 import io.github.suneom.MovieRnR.custom_class.MovieData;
 import io.github.suneom.MovieRnR.custom_class.PostReqResult;
 import io.github.suneom.MovieRnR.recycler_view.Adapter.MovieAdapter;
-import okhttp3.Authenticator;
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
 import okhttp3.Credentials;
 import okhttp3.FormBody;
-import okhttp3.MediaType;
+import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
-import okhttp3.Route;
 
 public class sRequest {
     private final static String TAG = "Request";
+    private final static MyCookieJar myCookieJar = new MyCookieJar();
+
+    static class MyCookieJar implements CookieJar {
+
+        private List<Cookie> cookies;
+
+        @Override
+        public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+            this.cookies =  cookies;
+        }
+
+        @Override
+        public List<Cookie> loadForRequest(HttpUrl url) {
+            if (cookies != null)
+                return cookies;
+            return new ArrayList<Cookie>();
+
+        }
+    }
 
 
 
@@ -134,11 +152,17 @@ public class sRequest {
 //        request.setShouldCache(false);
 //        MyApplication.requestQueue.add(request);
 
+
+
+
         new Thread(new Runnable() {
+
             @Override
             public void run() {
                 try {
-                    OkHttpClient client = new OkHttpClient();
+                    OkHttpClient.Builder builder = new OkHttpClient.Builder();
+                    builder.cookieJar(myCookieJar);
+                    OkHttpClient client = builder.build();
 
                     RequestBody formBody = new FormBody.Builder()
                             .add("id", id)
@@ -148,14 +172,16 @@ public class sRequest {
                     String url = MyApplication.SERVER_URL+"auth/login";
 
                     okhttp3.Request request = new okhttp3.Request.Builder()
+                            .addHeader("Authorization", Credentials.basic(id, password))
                             .url(url)
                             .post(formBody)
                             .build();
 
                     okhttp3.Response response = client.newCall(request).execute();
 
-                    Log.d("Login","request : " + request.toString());
-                    Log.d("Login","Response : " + response.body().string());
+
+                    Log.d("Login POST","request : " + request.toString());
+                    Log.d("Login POST","Response : " + response.body().string());
 
                 } catch(Exception e) {
                     e.printStackTrace();
@@ -165,7 +191,7 @@ public class sRequest {
         }).start();
     }
 
-    public static void requestLoginGet(String id, String password){
+    public static void requestLoginGet(){
 //        StringRequest request = new StringRequest(Request.Method.GET, MyApplication.SERVER_URL + "auth/login",
 //                new Response.Listener<String>() {
 //                    @Override
@@ -200,12 +226,13 @@ public class sRequest {
             @Override
             public void run() {
                 try {
-                    OkHttpClient client = new OkHttpClient();
+                    OkHttpClient.Builder builder = new OkHttpClient.Builder();
+                    builder.cookieJar(myCookieJar);
+                    OkHttpClient client = builder.build();
 
                     String url = MyApplication.SERVER_URL + "auth/login";
 
                     okhttp3.Request request = new okhttp3.Request.Builder()
-                            .addHeader("Authorization", Credentials.basic(id, password))
                             .url(url)
                             .build();
 
@@ -214,7 +241,7 @@ public class sRequest {
 
                     String result = response.body().string();
 
-                    Log.d("Login", result);
+                    Log.d("Login GET", result);
 
         //            Gson gson = new Gson();
         //            UserInfo info = gson.fromJson(result, UserInfo.class);
@@ -230,4 +257,6 @@ public class sRequest {
         }).start();
 
     }
+
+
 }
