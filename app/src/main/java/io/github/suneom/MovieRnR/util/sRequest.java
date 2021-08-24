@@ -58,7 +58,7 @@ public class sRequest {
         }
     }
 
-
+    //Posting 관련 Method
 
     public static void requestRecentPostings(MovieAdapter adapter){
         StringRequest request = new StringRequest(Request.Method.GET, MyApplication.SERVER_URL+"post"
@@ -127,6 +127,45 @@ public class sRequest {
         request.setShouldCache(false);
         MyApplication.requestQueue.add(request);
     }
+
+    public static void requestNewPosting(String title, String genres, String rates, String overview, Context context){
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient.Builder builder = new OkHttpClient.Builder();
+                    builder.cookieJar(myCookieJar);
+                    OkHttpClient client = builder.build();
+
+                    RequestBody formBody = new FormBody.Builder()
+                            .add("title", title)
+                            .add("genres", genres)
+                            .add("rates", rates)
+                            .add("overview", overview)
+                            .build();
+
+                    String url = MyApplication.SERVER_URL+"post";
+
+                    okhttp3.Request request = new okhttp3.Request.Builder()
+                            .url(url)
+                            .post(formBody)
+                            .build();
+
+                    okhttp3.Response response = client.newCall(request).execute();
+
+                    Intent intent = new Intent(context, MainActivity.class);
+                    context.startActivity(intent);
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
+    }
+
+
+    //Authentication 관련 Method
 
     public static void requestLoginPost(String id, String password, Context context){
 
@@ -204,40 +243,6 @@ public class sRequest {
         }).start();
 
     }
-
-    public static void requestNewPosting(String title, String genres, String rates, String overview){
-        new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    OkHttpClient.Builder builder = new OkHttpClient.Builder();
-                    builder.cookieJar(myCookieJar);
-                    OkHttpClient client = builder.build();
-
-                    RequestBody formBody = new FormBody.Builder()
-                            .add("title", title)
-                            .add("genres", genres)
-                            .add("rates", rates)
-                            .add("overview", overview)
-                            .build();
-
-                    String url = MyApplication.SERVER_URL+"post";
-
-                    okhttp3.Request request = new okhttp3.Request.Builder()
-                            .url(url)
-                            .post(formBody)
-                            .build();
-
-                    okhttp3.Response response = client.newCall(request).execute();
-                } catch(Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }).start();
-    }
-
 
     public static void requestLogout(){
         new Thread(new Runnable() {

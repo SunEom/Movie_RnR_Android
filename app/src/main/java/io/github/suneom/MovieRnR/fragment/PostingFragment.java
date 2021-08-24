@@ -47,7 +47,8 @@ public class PostingFragment extends Fragment implements CompoundButton.OnChecke
                 sRequest.requestNewPosting(title.getText().toString(),
                         parseArrayItemToString(selected_checkboxs),
                         rates.getText().toString(),
-                        overviews.getText().toString());
+                        overviews.getText().toString(),
+                        getContext());
             }
         });
 
