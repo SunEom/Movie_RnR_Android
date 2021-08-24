@@ -1,14 +1,12 @@
-package io.github.suneom.MovieRnR.custom_class.HttpResponse;
+package io.github.suneom.MovieRnR.custom_class.Comment;
 
 import java.util.ArrayList;
 
-import io.github.suneom.MovieRnR.custom_class.Comment;
-
-public class CommentHttpResponse {
+public class CommentResponse {
     public int code;
     public ArrayList<Comment> data;
 
-    public CommentHttpResponse(int code, ArrayList<Comment> data) {
+    public CommentResponse(int code, ArrayList<Comment> data) {
         this.code = code;
         this.data = data;
     }

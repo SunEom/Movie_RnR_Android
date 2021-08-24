@@ -1,4 +1,4 @@
-package io.github.suneom.MovieRnR.custom_class;
+package io.github.suneom.MovieRnR.custom_class.Comment;
 
 public class Comment {
     int commenter;
