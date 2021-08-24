@@ -258,5 +258,43 @@ public class sRequest {
 
     }
 
+    public static void requestNewPosting(String title, String genres, String rates, String overview){
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient.Builder builder = new OkHttpClient.Builder();
+                    builder.cookieJar(myCookieJar);
+                    OkHttpClient client = builder.build();
+
+                    RequestBody formBody = new FormBody.Builder()
+                            .add("title", title)
+                            .add("genres", genres)
+                            .add("rates", rates)
+                            .add("overview", overview)
+                            .build();
+
+                    String url = MyApplication.SERVER_URL+"auth/login";
+
+                    okhttp3.Request request = new okhttp3.Request.Builder()
+//                            .addHeader("Authorization", Credentials.basic(MyApplication.my))
+                            .url(url)
+                            .post(formBody)
+                            .build();
+
+                    okhttp3.Response response = client.newCall(request).execute();
+
+
+                    Log.d("Posting POST","request : " + request.toString());
+                    Log.d("Posting POST","Response : " + response.body().string());
+
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
+    }
 
 }

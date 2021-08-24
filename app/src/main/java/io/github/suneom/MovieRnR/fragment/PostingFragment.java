@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 
 import io.github.suneom.MovieRnR.R;
+import io.github.suneom.MovieRnR.util.sRequest;
 
 public class PostingFragment extends Fragment implements CompoundButton.OnCheckedChangeListener {
 
@@ -39,6 +40,16 @@ public class PostingFragment extends Fragment implements CompoundButton.OnChecke
         rates = rootView.findViewById(R.id.editText_rates);
         overviews = rootView.findViewById(R.id.editText_overviews);
         saveButton = rootView.findViewById(R.id.new_post_save_button);
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sRequest.requestNewPosting(title.getText().toString(),
+                        parseArrayItemToString(selected_checkboxs),
+                        rates.getText().toString(),
+                        overviews.getText().toString());
+            }
+        });
 
         return rootView;
     }
@@ -109,7 +120,20 @@ public class PostingFragment extends Fragment implements CompoundButton.OnChecke
 
     public static void print_every_item(ArrayList<CheckBox> checkBoxes){
         for(CheckBox checkBox : checkBoxes){
-            Log.d("Posting",checkBox.getText().toString());
+            Log.d("Posting",parseArrayItemToString(checkBoxes));
         }
+    }
+
+    public static String parseArrayItemToString(ArrayList<CheckBox> checkBoxes){
+        String result="";
+
+        for(int i=0; i<checkBoxes.size(); i++){
+            result += checkBoxes.get(i).getText().toString();
+            if(i != checkBoxes.size()-1){
+                result+=", ";
+            }
+        }
+
+        return result;
     }
 }

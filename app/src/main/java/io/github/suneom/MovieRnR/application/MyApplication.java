@@ -26,6 +26,8 @@ public class MyApplication extends Application {
 //    public static RequestQueue sRequestQueue;
 
 
+
+
     public final static HomeFragment homeFragment = new HomeFragment();
     public final static MovieAdapter.SearchFragment searchFragment = new MovieAdapter.SearchFragment();
 
