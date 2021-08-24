@@ -289,7 +289,7 @@ public class sRequest {
                     e.printStackTrace();
                 }
             }
-        })
+        }).start();
     }
 
     //Authentication 관련 Method
