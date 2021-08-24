@@ -33,7 +33,7 @@ public class LogInFragment extends Fragment {
             public void onClick(View v) {
                 String id_value = id.getText().toString();
                 String password_value = password.getText().toString();
-                sRequest.requestLoginPost(id_value, password_value);
+                sRequest.requestLoginPost(id_value, password_value, getContext());
             }
         });
 
@@ -43,7 +43,7 @@ public class LogInFragment extends Fragment {
             public void onClick(View v) {
                 String id_value = id.getText().toString();
                 String password_value = password.getText().toString();
-                sRequest.requestLoginGet();
+                sRequest.requestLoginGet(getContext());
             }
         });
 
