@@ -17,32 +17,15 @@ import okhttp3.OkHttpClient;
 
 public class MyApplication extends Application {
 
-    public static final MovieAdapter movieAdapter = new MovieAdapter();
-
     public final static String TAG = "MyApplication";
 
     public final static String SERVER_URL = "https://movie-rnr-server.herokuapp.com/";
 
     public static RequestQueue requestQueue;
-//    public static RequestQueue sRequestQueue;
 
     public static LoginUserInfo my_info = null;
 
-
-
     public final static HomeFragment homeFragment = new HomeFragment();
-    public final static MovieAdapter.SearchFragment searchFragment = new MovieAdapter.SearchFragment();
-
-    public static Authenticator getAuthenticator(final String userId, final String password) {
-
-        return (route, response) -> {
-            String credential = Credentials.basic(userId, password);
-
-            return response.request().newBuilder().header("Authorization", credential).build();
-        };
-    }
-
-
 
     @Override
     public void onCreate() {
@@ -52,16 +35,6 @@ public class MyApplication extends Application {
             requestQueue = Volley.newRequestQueue(getApplicationContext());
         }
 
-//        initRequestQueue("","",getApplicationContext());
-
     }
-//
-//
-//    public static void initRequestQueue(String id, String password, Context context){
-//        OkHttpClient client = new OkHttpClient.Builder()
-//                .authenticator(MyApplication.getAuthenticator(id, password)).build();
-//
-//        sRequestQueue = Volley.newRequestQueue(context, (HttpStack) client);
-//    }
 
 }

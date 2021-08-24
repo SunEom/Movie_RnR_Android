@@ -62,11 +62,9 @@ public class sRequest {
                 , new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d(TAG,"Result : "+ response);
 
                 Gson gson = new Gson();
                 PostReqResult result = gson.fromJson(response, PostReqResult.class);
-                Log.d(TAG,String.valueOf(result.data.size()));
 
                 if(result.code == 200){
                     for(int i=0; i<result.data.size(); i++){
@@ -93,7 +91,6 @@ public class sRequest {
                 , new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d(TAG,"Result : "+ response);
 
                 Gson gson = new Gson();
                 PostReqResult result = gson.fromJson(response, PostReqResult.class);
@@ -129,33 +126,6 @@ public class sRequest {
     }
 
     public static void requestLoginPost(String id, String password){
-//        StringRequest request = new StringRequest(Request.Method.POST, MyApplication.SERVER_URL + "auth/login",
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        Log.d("Login POST", response);
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Log.d("Login POST ERROR", error.getMessage());
-//                    }
-//                }){
-//            @Nullable
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                Map<String, String> params = new HashMap<String, String>();
-//                params.put("id", id);
-//                params.put("password",password);
-//                return params;
-//            }
-//        };
-//        request.setShouldCache(false);
-//        MyApplication.requestQueue.add(request);
-
-
-
 
         new Thread(new Runnable() {
 
@@ -182,15 +152,11 @@ public class sRequest {
                     okhttp3.Response response = client.newCall(request).execute();
 
 
-                    Log.d("Login POST","request : " + request.toString());
-                    Log.d("Login POST","Response : " + response.body().string());
                     String result = response.body().string();
 
                     Gson gson = new Gson();
                     HttpResponse info = gson.fromJson(result, HttpResponse.class);
 
-
-                    Log.d("Login POST", info.data.nickname);
 
                     MyApplication.my_info = info.data;
 
@@ -203,36 +169,6 @@ public class sRequest {
     }
 
     public static void requestLoginGet(){
-//        StringRequest request = new StringRequest(Request.Method.GET, MyApplication.SERVER_URL + "auth/login",
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        Log.d("Login GET", response);
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        VolleyLog.d("Login GET ERROR", error.getMessage());
-//                    }
-//                }){
-//            @Nullable
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                Map<String, String> params = new HashMap<String, String>();
-//                return params;
-//            }
-//
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                Map<String, String> headers = new HashMap<String, String>();
-//                headers.put("User-Agent","Mozilla/5.0");
-//                return headers;
-//            }
-//        };
-//        request.setShouldCache(false);
-//        MyApplication.requestQueue.add(request);
-
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -255,9 +191,6 @@ public class sRequest {
                     Gson gson = new Gson();
 
                     HttpResponse info = gson.fromJson(result, HttpResponse.class);
-
-                    Log.d("Login GET", info.data.nickname);
-
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
@@ -291,11 +224,6 @@ public class sRequest {
                             .build();
 
                     okhttp3.Response response = client.newCall(request).execute();
-
-
-                    Log.d("Posting POST","request : " + request.toString());
-                    Log.d("Posting POST","Response : " + response.body().string());
-
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
@@ -322,11 +250,6 @@ public class sRequest {
                             .build();
 
                     okhttp3.Response response = client.newCall(request).execute();
-
-
-                    Log.d("Logout","request : " + request.toString());
-                    Log.d("Logout","Response : " + response.body().string());
-
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
