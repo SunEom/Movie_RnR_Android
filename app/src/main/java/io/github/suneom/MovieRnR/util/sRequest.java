@@ -258,6 +258,40 @@ public class sRequest {
 
     }
 
+    public static void requestNewComment(String contents, String posting_id){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient.Builder builder= new OkHttpClient.Builder();
+                    builder.cookieJar(myCookieJar);
+                    OkHttpClient client = builder.build();
+
+                    String url = MyApplication.SERVER_URL + "comment";
+
+                    FormBody formBody = new FormBody.Builder()
+                            .add("contents", contents)
+                            .add("movie_id", posting_id)
+                            .build();
+
+                    okhttp3.Request request = new okhttp3.Request.Builder()
+                            .url(url)
+                            .post(formBody)
+                            .build();
+
+                    okhttp3.Response response = client.newCall(request).execute();
+
+                    String result = response.body().string();
+
+                    Log.d("New Comment",result);
+
+                } catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        })
+    }
+
     //Authentication 관련 Method
 
     public static void requestLoginPost(String id, String password, Context context){
