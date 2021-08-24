@@ -8,6 +8,6 @@ public class sUtil {
     }
 
     public static String ParseDateTilDate(String date){
-        return date.substring(0,9);
+        return date.substring(0,10);
     }
 }
