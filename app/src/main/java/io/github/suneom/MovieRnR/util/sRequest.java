@@ -11,7 +11,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.github.suneom.MovieRnR.application.MyApplication;
@@ -19,9 +22,38 @@ import io.github.suneom.MovieRnR.custom_class.Movie;
 import io.github.suneom.MovieRnR.custom_class.MovieData;
 import io.github.suneom.MovieRnR.custom_class.PostReqResult;
 import io.github.suneom.MovieRnR.recycler_view.Adapter.MovieAdapter;
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
+import okhttp3.Credentials;
+import okhttp3.FormBody;
+import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
 
 public class sRequest {
     private final static String TAG = "Request";
+    private final static MyCookieJar myCookieJar = new MyCookieJar();
+
+    static class MyCookieJar implements CookieJar {
+
+        private List<Cookie> cookies;
+
+        @Override
+        public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+            this.cookies =  cookies;
+        }
+
+        @Override
+        public List<Cookie> loadForRequest(HttpUrl url) {
+            if (cookies != null)
+                return cookies;
+            return new ArrayList<Cookie>();
+
+        }
+    }
+
+
 
     public static void requestRecentPostings(MovieAdapter adapter){
         StringRequest request = new StringRequest(Request.Method.GET, MyApplication.SERVER_URL+"post"
@@ -95,54 +127,136 @@ public class sRequest {
     }
 
     public static void requestLoginPost(String id, String password){
-        StringRequest request = new StringRequest(Request.Method.POST, MyApplication.SERVER_URL + "auth/login",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("Login", response);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("Login", error.getMessage());
-                    }
-                }){
-            @Nullable
+//        StringRequest request = new StringRequest(Request.Method.POST, MyApplication.SERVER_URL + "auth/login",
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        Log.d("Login POST", response);
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Log.d("Login POST ERROR", error.getMessage());
+//                    }
+//                }){
+//            @Nullable
+//            @Override
+//            protected Map<String, String> getParams() throws AuthFailureError {
+//                Map<String, String> params = new HashMap<String, String>();
+//                params.put("id", id);
+//                params.put("password",password);
+//                return params;
+//            }
+//        };
+//        request.setShouldCache(false);
+//        MyApplication.requestQueue.add(request);
+
+
+
+
+        new Thread(new Runnable() {
+
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("id", id);
-                params.put("password",password);
-                return params;
+            public void run() {
+                try {
+                    OkHttpClient.Builder builder = new OkHttpClient.Builder();
+                    builder.cookieJar(myCookieJar);
+                    OkHttpClient client = builder.build();
+
+                    RequestBody formBody = new FormBody.Builder()
+                            .add("id", id)
+                            .add("password", password)
+                            .build();
+
+                    String url = MyApplication.SERVER_URL+"auth/login";
+
+                    okhttp3.Request request = new okhttp3.Request.Builder()
+                            .addHeader("Authorization", Credentials.basic(id, password))
+                            .url(url)
+                            .post(formBody)
+                            .build();
+
+                    okhttp3.Response response = client.newCall(request).execute();
+
+
+                    Log.d("Login POST","request : " + request.toString());
+                    Log.d("Login POST","Response : " + response.body().string());
+
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+
             }
-        };
-        request.setShouldCache(false);
-        MyApplication.requestQueue.add(request);
+        }).start();
     }
 
     public static void requestLoginGet(){
-        StringRequest request = new StringRequest(Request.Method.GET, MyApplication.SERVER_URL + "auth/login",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("Login", response);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("Login", error.getMessage());
-                    }
-                }){
-            @Nullable
+//        StringRequest request = new StringRequest(Request.Method.GET, MyApplication.SERVER_URL + "auth/login",
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        Log.d("Login GET", response);
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        VolleyLog.d("Login GET ERROR", error.getMessage());
+//                    }
+//                }){
+//            @Nullable
+//            @Override
+//            protected Map<String, String> getParams() throws AuthFailureError {
+//                Map<String, String> params = new HashMap<String, String>();
+//                return params;
+//            }
+//
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                Map<String, String> headers = new HashMap<String, String>();
+//                headers.put("User-Agent","Mozilla/5.0");
+//                return headers;
+//            }
+//        };
+//        request.setShouldCache(false);
+//        MyApplication.requestQueue.add(request);
+
+        new Thread(new Runnable() {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                return params;
+            public void run() {
+                try {
+                    OkHttpClient.Builder builder = new OkHttpClient.Builder();
+                    builder.cookieJar(myCookieJar);
+                    OkHttpClient client = builder.build();
+
+                    String url = MyApplication.SERVER_URL + "auth/login";
+
+                    okhttp3.Request request = new okhttp3.Request.Builder()
+                            .url(url)
+                            .build();
+
+                    okhttp3.Response response = client.newCall(request)
+                            .execute();
+
+                    String result = response.body().string();
+
+                    Log.d("Login GET", result);
+
+        //            Gson gson = new Gson();
+        //            UserInfo info = gson.fromJson(result, UserInfo.class);
+        //
+        //            Log.i("id: " + info.id);
+        //            Log.i("name: " + info.name);
+        //
+        //            return true;
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
             }
-        };
-        request.setShouldCache(false);
-        MyApplication.requestQueue.add(request);
+        }).start();
+
     }
+
+
 }
