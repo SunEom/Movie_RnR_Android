@@ -8,6 +8,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.HttpStack;
 import com.android.volley.toolbox.Volley;
 
+import io.github.suneom.MovieRnR.custom_class.LoginUserInfo;
 import io.github.suneom.MovieRnR.fragment.HomeFragment;
 import io.github.suneom.MovieRnR.recycler_view.Adapter.MovieAdapter;
 import okhttp3.Authenticator;
@@ -25,6 +26,7 @@ public class MyApplication extends Application {
     public static RequestQueue requestQueue;
 //    public static RequestQueue sRequestQueue;
 
+    public static LoginUserInfo my_info = null;
 
     public final static HomeFragment homeFragment = new HomeFragment();
     public final static MovieAdapter.SearchFragment searchFragment = new MovieAdapter.SearchFragment();
