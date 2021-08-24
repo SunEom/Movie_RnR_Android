@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "My Page",Toast.LENGTH_LONG).show();
                         break;
                     case R.id.posting:
-                        Toast.makeText(getApplicationContext(), "Posting",Toast.LENGTH_LONG).show();
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, postingFragment).commit();
                         break;
                     case R.id.logout:
