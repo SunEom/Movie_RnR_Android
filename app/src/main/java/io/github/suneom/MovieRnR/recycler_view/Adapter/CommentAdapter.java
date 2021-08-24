@@ -65,8 +65,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Viewhold
         }
 
         public void setItem(Comment comment){
-            commenter.setText(comment.getCommenter());
-            content.setText(comment.getContent());
+            commenter.setText(comment.getNickname());
+            content.setText(comment.getContents());
         }
     }
 }

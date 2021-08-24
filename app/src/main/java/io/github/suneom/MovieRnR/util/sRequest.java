@@ -1,8 +1,11 @@
 package io.github.suneom.MovieRnR.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -14,25 +17,25 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.github.suneom.MovieRnR.R;
 import io.github.suneom.MovieRnR.activity.MainActivity;
 import io.github.suneom.MovieRnR.application.MyApplication;
-import io.github.suneom.MovieRnR.custom_class.HttpResponse;
-import io.github.suneom.MovieRnR.custom_class.LoginUserInfo;
+import io.github.suneom.MovieRnR.custom_class.HttpResponse.CommentHttpResponse;
+import io.github.suneom.MovieRnR.custom_class.HttpResponse.LoginHttpResponse;
 import io.github.suneom.MovieRnR.custom_class.Movie;
 import io.github.suneom.MovieRnR.custom_class.MovieData;
 import io.github.suneom.MovieRnR.custom_class.PostReqResult;
+import io.github.suneom.MovieRnR.recycler_view.Adapter.CommentAdapter;
 import io.github.suneom.MovieRnR.recycler_view.Adapter.MovieAdapter;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.Credentials;
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 
@@ -164,6 +167,56 @@ public class sRequest {
         }).start();
     }
 
+    //Comment 관련 Method
+
+    public static void requestCommentList(CommentAdapter adapter, int posting_id, Activity activity){
+
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient.Builder builder = new OkHttpClient.Builder();
+                    builder.cookieJar(myCookieJar);
+                    OkHttpClient client = builder.build();
+
+                    String url = MyApplication.SERVER_URL+"comment"+"/"+posting_id;
+
+                    okhttp3.Request request = new okhttp3.Request.Builder()
+                            .url(url)
+                            .build();
+
+                    okhttp3.Response response = client.newCall(request).execute();
+
+                    String result = response.body().string();
+
+                    Gson gson = new Gson();
+                    CommentHttpResponse info = gson.fromJson(result, CommentHttpResponse.class);
+
+                    // MainThread에서만 View를 조작할 수 있기때문에 다음과 같이 activity를 가져와서 MainThread에서 recycler view를 조작한다.
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.setItems(info.getData());
+
+                            adapter.notifyDataSetChanged();
+
+                            // Comment가 1개라도 존재한다면 Comment가 없다는 TextView를 숨긴다.
+                            if(adapter.getItemCount() != 0){
+                                TextView noCommentAlert = activity.findViewById(R.id.comment_empty_alert);
+                                noCommentAlert.setVisibility(View.GONE);
+                            }
+                        }
+                    });
+
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
+
+    }
 
     //Authentication 관련 Method
 
@@ -197,7 +250,7 @@ public class sRequest {
                     String result = response.body().string();
 
                     Gson gson = new Gson();
-                    HttpResponse info = gson.fromJson(result, HttpResponse.class);
+                    LoginHttpResponse info = gson.fromJson(result, LoginHttpResponse.class);
 
 
                     MyApplication.my_info = info.data;
@@ -235,7 +288,7 @@ public class sRequest {
 
                     Gson gson = new Gson();
 
-                    HttpResponse info = gson.fromJson(result, HttpResponse.class);
+                    LoginHttpResponse info = gson.fromJson(result, LoginHttpResponse.class);
                 } catch(Exception e) {
                     e.printStackTrace();
                 }

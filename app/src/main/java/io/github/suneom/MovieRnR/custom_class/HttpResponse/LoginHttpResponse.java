@@ -1,10 +1,12 @@
-package io.github.suneom.MovieRnR.custom_class;
+package io.github.suneom.MovieRnR.custom_class.HttpResponse;
 
-public class HttpResponse {
+import io.github.suneom.MovieRnR.custom_class.LoginUserInfo;
+
+public class LoginHttpResponse {
     public int code;
     public LoginUserInfo data;
 
-    public HttpResponse(int code, LoginUserInfo data) {
+    public LoginHttpResponse(int code, LoginUserInfo data) {
         this.code = code;
         this.data = data;
     }
