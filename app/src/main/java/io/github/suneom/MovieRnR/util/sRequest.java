@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Map;
 
 import io.github.suneom.MovieRnR.application.MyApplication;
+import io.github.suneom.MovieRnR.custom_class.HttpResponse;
+import io.github.suneom.MovieRnR.custom_class.LoginUserInfo;
 import io.github.suneom.MovieRnR.custom_class.Movie;
 import io.github.suneom.MovieRnR.custom_class.MovieData;
 import io.github.suneom.MovieRnR.custom_class.PostReqResult;
@@ -183,6 +185,12 @@ public class sRequest {
                     Log.d("Login POST","request : " + request.toString());
                     Log.d("Login POST","Response : " + response.body().string());
 
+                    Gson gson = new Gson();
+
+                    HttpResponse info = gson.fromJson(response.body().string(), HttpResponse.class);
+
+                    MyApplication.my_info = info.data;
+
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
@@ -241,15 +249,12 @@ public class sRequest {
 
                     String result = response.body().string();
 
-                    Log.d("Login GET", result);
+                    Gson gson = new Gson();
 
-        //            Gson gson = new Gson();
-        //            UserInfo info = gson.fromJson(result, UserInfo.class);
-        //
-        //            Log.i("id: " + info.id);
-        //            Log.i("name: " + info.name);
-        //
-        //            return true;
+                    HttpResponse info = gson.fromJson(result, HttpResponse.class);
+
+                    MyApplication.my_info = info.data;
+
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
