@@ -1,5 +1,6 @@
 package io.github.suneom.MovieRnR.fragment;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -72,8 +74,32 @@ public class DetailFragment extends Fragment {
             comment_input.setEnabled(true);
             comment_button.setEnabled(true);
 
-            comment_input.setText("Leave a comment ...");
+            comment_input.setHint("Leave a comment ...");
         }
+        comment_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(comment_input.getText() == null || comment_input.getText().toString().equals("")){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+                    builder.setMessage("댓글을 입력해주세요!");
+                    builder.setNeutralButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+
+                    AlertDialog alertDialog = builder.create();
+
+                    alertDialog.show();
+                    return;
+                }
+
+                String content = comment_input.getText().toString();
+                sRequest.requestNewComment(content, String.valueOf(movieId),adapter, getActivity());
+                comment_input.setText("");
+            }
+        });
 
         sRequest.requestCommentList(adapter, movieId, getActivity());
         sRequest.requestPostingDetail(movieId, getActivity(), this);

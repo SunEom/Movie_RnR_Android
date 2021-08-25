@@ -102,7 +102,7 @@ public class sRequest {
         MyApplication.requestQueue.add(request);
     }
 
-    public static void requestSearchPostings(MovieAdapter adapter , final String keyword){
+    public static void requestSearchPostings(MovieAdapter adapter , final String keyword, Activity activity){
         StringRequest request = new StringRequest(Request.Method.POST, MyApplication.SERVER_URL+"search"
                 , new Response.Listener<String>() {
             @Override
@@ -119,6 +119,10 @@ public class sRequest {
                     }
                     adapter.notifyDataSetChanged();
                 }
+
+
+                activity.findViewById(R.id.home_progressBar).setVisibility(View.GONE);
+                activity.findViewById(R.id.recyclerView_home).setVisibility(View.VISIBLE);
 
             }
         }, new Response.ErrorListener() {
@@ -274,7 +278,7 @@ public class sRequest {
 
     }
 
-    public static void requestNewComment(String contents, String posting_id){
+    public static void requestNewComment(String contents, String posting_id, CommentAdapter adapter, Activity activity){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -300,6 +304,8 @@ public class sRequest {
                     String result = response.body().string();
 
                     Log.d("New Comment",result);
+
+                    requestCommentList(adapter,Integer.parseInt(posting_id),activity);
 
                 } catch(Exception e){
                     e.printStackTrace();
