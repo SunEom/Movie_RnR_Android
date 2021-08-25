@@ -460,8 +460,6 @@ public class sRequest {
                         }
                     });
 
-
-
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
