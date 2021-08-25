@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import io.github.suneom.MovieRnR.R;
+import io.github.suneom.MovieRnR.application.MyApplication;
 import io.github.suneom.MovieRnR.custom_class.Detail.PostingOwner;
 import io.github.suneom.MovieRnR.custom_class.Movie.MovieData;
 import io.github.suneom.MovieRnR.recycler_view.Adapter.CommentAdapter;
@@ -28,6 +31,9 @@ public class DetailFragment extends Fragment {
     TextView title, genres, rates, overview, created, nickname;
     ProgressBar progressBar;
     ScrollView scrollView;
+
+    EditText comment_input;
+    Button comment_button;
 
     int movieId;
 
@@ -58,6 +64,16 @@ public class DetailFragment extends Fragment {
         overview = rootView.findViewById(R.id.detail_overview);
         created = rootView.findViewById(R.id.detail_createdAt);
         nickname = rootView.findViewById(R.id.detail_createdBy);
+
+        comment_button = rootView.findViewById(R.id.comment_button);
+        comment_input = rootView.findViewById(R.id.comment_input);
+
+        if(MyApplication.my_info != null){
+            comment_input.setEnabled(true);
+            comment_button.setEnabled(true);
+
+            comment_input.setText("Leave a comment ...");
+        }
 
         sRequest.requestCommentList(adapter, movieId, getActivity());
         sRequest.requestPostingDetail(movieId, getActivity(), this);

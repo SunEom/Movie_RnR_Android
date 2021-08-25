@@ -121,7 +121,8 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:background="@drawable/comment_input"
-                    android:hint="Leave a comment..."
+                    android:enabled="false"
+                    android:hint="Please log in to leave a comment"
                     android:inputType="textMultiLine"
                     android:textSize="12dp" />
 
@@ -133,6 +134,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
+                android:enabled="false"
                 android:text="Comment" />
 
             <TextView
