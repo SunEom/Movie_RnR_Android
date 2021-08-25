@@ -35,7 +35,10 @@ import io.github.suneom.MovieRnR.custom_class.Login.LoginResponse;
 import io.github.suneom.MovieRnR.custom_class.Movie.Movie;
 import io.github.suneom.MovieRnR.custom_class.Movie.MovieData;
 import io.github.suneom.MovieRnR.custom_class.Movie.PostReqResult;
+import io.github.suneom.MovieRnR.custom_class.Profile.ProfileData;
+import io.github.suneom.MovieRnR.custom_class.Profile.ProfileResponse;
 import io.github.suneom.MovieRnR.fragment.DetailFragment;
+import io.github.suneom.MovieRnR.fragment.ProfileFragment;
 import io.github.suneom.MovieRnR.recycler_view.Adapter.CommentAdapter;
 import io.github.suneom.MovieRnR.recycler_view.Adapter.MovieAdapter;
 import okhttp3.Cookie;
@@ -348,8 +351,7 @@ public class sRequest {
                     Gson gson = new Gson();
                     LoginResponse info = gson.fromJson(result, LoginResponse.class);
 
-
-                    MyApplication.my_info = info.data;
+                    MyApplication.setMyInfo(info.data);
 
                     Intent intent = new Intent(context, MainActivity.class);
                     context.startActivity(intent);
@@ -385,6 +387,9 @@ public class sRequest {
                     Gson gson = new Gson();
 
                     LoginResponse info = gson.fromJson(result, LoginResponse.class);
+
+                    MyApplication.setMyInfo(info.data);
+
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
@@ -410,6 +415,8 @@ public class sRequest {
                             .build();
 
                     okhttp3.Response response = client.newCall(request).execute();
+                    MyApplication.setMyInfo(null);
+
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
@@ -417,4 +424,48 @@ public class sRequest {
             }
         }).start();
     }
+
+    //Profile 관련 Method
+
+    public static void requestProfileData(int id, ProfileFragment fragment){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient.Builder builder = new OkHttpClient.Builder();
+                    builder.cookieJar(myCookieJar);
+                    OkHttpClient client = builder.build();
+
+                    String url = MyApplication.SERVER_URL+"user/"+String.valueOf(id);
+
+                    okhttp3.Request request = new okhttp3.Request.Builder()
+                            .url(url)
+                            .build();
+
+                    okhttp3.Response response = client.newCall(request).execute();
+
+                    String result = response.body().string();
+
+                    Gson gson = new Gson();
+                    ProfileResponse info =  gson.fromJson(result, ProfileResponse.class);
+
+                    ProfileData data = info.data.get(0);
+
+
+                    fragment.getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            fragment.setInfo(data);
+                            fragment.setOtherSnsOnClickListener(data);
+                        }
+                    });
+
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
+    }
+
 }

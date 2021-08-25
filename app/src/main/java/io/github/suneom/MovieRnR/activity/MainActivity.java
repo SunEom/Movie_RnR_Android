@@ -30,6 +30,7 @@ import io.github.suneom.MovieRnR.fragment.DetailFragment;
 import io.github.suneom.MovieRnR.fragment.HomeFragment;
 import io.github.suneom.MovieRnR.fragment.LogInFragment;
 import io.github.suneom.MovieRnR.fragment.PostingFragment;
+import io.github.suneom.MovieRnR.fragment.ProfileFragment;
 import io.github.suneom.MovieRnR.fragment.SearchFragment;
 import io.github.suneom.MovieRnR.recycler_view.Adapter.MovieAdapter;
 import io.github.suneom.MovieRnR.util.sRequest;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     SearchFragment searchFragment;
     PostingFragment postingFragment;
     LogInFragment logInFragment;
+    ProfileFragment profileFragment;
 
     @Override
     public void onBackPressed() {
@@ -92,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
         postingFragment = new PostingFragment();
         logInFragment = new LogInFragment();
+        profileFragment = new ProfileFragment();
 
         settingBasicUI();
 
@@ -120,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
                 switch(id){
                     case R.id.mypage:
-                        Toast.makeText(getApplicationContext(), "My Page",Toast.LENGTH_LONG).show();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, profileFragment).commit();
                         break;
                     case R.id.posting:
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, postingFragment).commit();

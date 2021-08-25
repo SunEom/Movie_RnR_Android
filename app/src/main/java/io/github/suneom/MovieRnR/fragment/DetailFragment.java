@@ -2,6 +2,7 @@ package io.github.suneom.MovieRnR.fragment;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +55,7 @@ public class DetailFragment extends Fragment {
         recyclerView.setLayoutManager(manager);
 
         adapter = new CommentAdapter();
+        adapter.setFragmentManager(getActivity().getSupportFragmentManager());
 
         recyclerView.setAdapter(adapter);
 
@@ -107,13 +109,25 @@ public class DetailFragment extends Fragment {
         return rootView;
     }
 
-    public void setInfo(MovieData movie, PostingOwner owner){
+    public void setInfo(MovieData movie, PostingOwner owner) {
         title.setText(movie.title);
         genres.setText(movie.genres);
-        rates.setText("⭐ " + String.valueOf(movie.rates)+"/ 10");
+        rates.setText("⭐ " + String.valueOf(movie.rates) + "/ 10");
         overview.setText(movie.overview);
         created.setText(sUtil.ParseDateTilDate(movie.created));
-        nickname.setText(owner.getNickname());
+        nickname.setText("By " + owner.getNickname());
+
+        nickname.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProfileFragment profileFragment = new ProfileFragment();
+                Bundle bundle = new Bundle();
+                bundle.putInt("id", owner.getId());
+                profileFragment.setArguments(bundle);
+
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,profileFragment).commit();
+            }
+        });
     }
 
     public void setVisiblityAfterLoad(){

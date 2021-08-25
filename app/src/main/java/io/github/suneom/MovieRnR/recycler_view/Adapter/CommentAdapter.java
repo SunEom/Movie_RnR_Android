@@ -1,21 +1,28 @@
 package io.github.suneom.MovieRnR.recycler_view.Adapter;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
 import io.github.suneom.MovieRnR.R;
+import io.github.suneom.MovieRnR.application.MyApplication;
 import io.github.suneom.MovieRnR.custom_class.Comment.Comment;
+import io.github.suneom.MovieRnR.fragment.DetailFragment;
+import io.github.suneom.MovieRnR.fragment.ProfileFragment;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Viewholder> {
 
     ArrayList<Comment> items = new ArrayList<Comment>();
+
+    FragmentManager manager;
 
     public void setItems(ArrayList<Comment> items){
         this.items = items;
@@ -31,6 +38,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Viewhold
 
     public void setItem(int position, Comment item){
         items.set(position, item);
+    }
+
+    public void setFragmentManager (FragmentManager manager) {
+        this.manager = manager;
     }
 
     @NonNull
@@ -66,6 +77,18 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Viewhold
         public void setItem(Comment comment){
             commenter.setText(comment.getNickname());
             content.setText(comment.getContents());
+
+            commenter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ProfileFragment profileFragment = new ProfileFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id", comment.getCommenter());
+                    profileFragment.setArguments(bundle);
+
+                    manager.beginTransaction().replace(R.id.fragment_container,profileFragment).commit();
+                }
+            });
         }
     }
 }
