@@ -31,6 +31,7 @@ import io.github.suneom.MovieRnR.custom_class.Login.LoginResponse;
 import io.github.suneom.MovieRnR.custom_class.Movie.Movie;
 import io.github.suneom.MovieRnR.custom_class.Movie.MovieData;
 import io.github.suneom.MovieRnR.custom_class.Movie.PostReqResult;
+import io.github.suneom.MovieRnR.fragment.DetailFragment;
 import io.github.suneom.MovieRnR.recycler_view.Adapter.CommentAdapter;
 import io.github.suneom.MovieRnR.recycler_view.Adapter.MovieAdapter;
 import okhttp3.Cookie;
@@ -172,7 +173,7 @@ public class sRequest {
         }).start();
     }
 
-    public static void requestPostingDetail(int posting_id, Activity activity){
+    public static void requestPostingDetail(int posting_id, Activity activity, DetailFragment fragment){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -197,10 +198,8 @@ public class sRequest {
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            ((DetailActivity) activity).setInfo(info.getData().getMovie(), info.getData().getUser());
-
-                            activity.findViewById(R.id.detail_progressBar).setVisibility(View.GONE);
-                            activity.findViewById(R.id.content_scrollView).setVisibility(View.VISIBLE);
+                            fragment.setInfo(info.getData().getMovie(), info.getData().getUser());
+                            fragment.setVisiblityAfterLoad();
                         }
                     });
 

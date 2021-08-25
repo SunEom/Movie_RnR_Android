@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import io.github.suneom.MovieRnR.application.MyApplication;
 import io.github.suneom.MovieRnR.R;
+import io.github.suneom.MovieRnR.fragment.DetailFragment;
 import io.github.suneom.MovieRnR.fragment.HomeFragment;
 import io.github.suneom.MovieRnR.fragment.LogInFragment;
 import io.github.suneom.MovieRnR.fragment.PostingFragment;
@@ -45,6 +47,13 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if(drawer.isDrawerOpen(GravityCompat.START)){
             drawer.closeDrawer(GravityCompat.START);
+            return;
+        }else if(getSupportFragmentManager().findFragmentById(R.id.fragment_container) instanceof LogInFragment){
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
+        }else if(getSupportFragmentManager().findFragmentById(R.id.fragment_container) instanceof PostingFragment){
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
+        } else if(getSupportFragmentManager().findFragmentById(R.id.fragment_container) instanceof DetailFragment){
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
         } else {
             super.onBackPressed();
         }
