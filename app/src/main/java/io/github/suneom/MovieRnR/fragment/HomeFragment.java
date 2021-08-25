@@ -39,9 +39,12 @@ public class HomeFragment extends Fragment {
         adapter.setOnItemClickListener(new OnMovieItemClickListener() {
             @Override
             public void onItemClick(MovieAdapter.ViewHolder holder, View view, int position) {
-                Intent intent = new Intent(getContext(), DetailActivity.class);
-                intent.putExtra("id", holder.id);
-                startActivity(intent);
+                DetailFragment detailFragment = new DetailFragment();
+                Bundle bundle = new Bundle();
+                bundle.putInt("id", holder.id);
+                detailFragment.setArguments(bundle);
+
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,detailFragment).commit();
             }
         });
 

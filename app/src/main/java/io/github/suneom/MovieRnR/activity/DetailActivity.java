@@ -6,9 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import io.github.suneom.MovieRnR.R;
 import io.github.suneom.MovieRnR.custom_class.Detail.PostingOwner;
@@ -25,7 +23,7 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details);
+        setContentView(R.layout.fragment_detail);
 
         int id = getIntent().getIntExtra("id",-1);
 
@@ -44,8 +42,8 @@ public class DetailActivity extends AppCompatActivity {
         created = findViewById(R.id.detail_createdAt);
         nickname = findViewById(R.id.detail_createdBy);
 
-        sRequest.requestCommentList(adapter, id, this);
-        sRequest.requestPostingDetail(id, this);
+//        sRequest.requestCommentList(adapter, id, this);
+//        sRequest.requestPostingDetail(id, this);
     }
 
     @Override

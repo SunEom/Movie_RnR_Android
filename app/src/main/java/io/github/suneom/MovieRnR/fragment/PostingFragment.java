@@ -1,5 +1,6 @@
 package io.github.suneom.MovieRnR.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import java.util.ArrayList;
 
@@ -44,11 +46,12 @@ public class PostingFragment extends Fragment implements CompoundButton.OnChecke
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FragmentManager manager = getActivity().getSupportFragmentManager();
                 sRequest.requestNewPosting(title.getText().toString(),
                         parseArrayItemToString(selected_checkboxs),
                         rates.getText().toString(),
                         overviews.getText().toString(),
-                        getContext());
+                        manager);
             }
         });
 

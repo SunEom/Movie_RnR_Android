@@ -6,11 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,9 +26,11 @@ import com.google.android.material.navigation.NavigationView;
 
 import io.github.suneom.MovieRnR.application.MyApplication;
 import io.github.suneom.MovieRnR.R;
+import io.github.suneom.MovieRnR.fragment.DetailFragment;
 import io.github.suneom.MovieRnR.fragment.HomeFragment;
 import io.github.suneom.MovieRnR.fragment.LogInFragment;
 import io.github.suneom.MovieRnR.fragment.PostingFragment;
+import io.github.suneom.MovieRnR.fragment.SearchFragment;
 import io.github.suneom.MovieRnR.recycler_view.Adapter.MovieAdapter;
 import io.github.suneom.MovieRnR.util.sRequest;
 
@@ -37,14 +41,39 @@ public class MainActivity extends AppCompatActivity {
     Window window;
 
     HomeFragment homeFragment;
-    MovieAdapter.SearchFragment searchFragment;
+    SearchFragment searchFragment;
     PostingFragment postingFragment;
     LogInFragment logInFragment;
 
     @Override
     public void onBackPressed() {
+        Fragment curFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+
         if(drawer.isDrawerOpen(GravityCompat.START)){
             drawer.closeDrawer(GravityCompat.START);
+            return;
+        }else if(curFragment instanceof LogInFragment){
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
+        }else if(curFragment instanceof PostingFragment){
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
+        } else if(curFragment instanceof DetailFragment){
+            if(curFragment.getArguments().getString("keyword") == null){
+                //HomeFragment 에서 DetailFragment로 접근한 경우
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
+            } else {
+                //SearchFragment 에서 DetailFragment로 접근한 경우
+                SearchFragment searchFragment = new SearchFragment();
+                int id = getSupportFragmentManager().findFragmentById(R.id.fragment_container).getArguments().getInt("id");
+                String keyword = getSupportFragmentManager().findFragmentById(R.id.fragment_container).getArguments().getString("keyword");
+
+                Bundle bundle = new Bundle();
+                bundle.putString("keyword",keyword);
+                searchFragment.setArguments(bundle);
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,searchFragment).commit();
+            }
+        } else if(curFragment instanceof SearchFragment){
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
         } else {
             super.onBackPressed();
         }
@@ -126,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 searchFragment = null;
-                searchFragment = new MovieAdapter.SearchFragment();
+                searchFragment = new SearchFragment();
 
                 Bundle bundle = new Bundle();
                 bundle.putString("keyword", actionBar_searchBar.getText().toString());

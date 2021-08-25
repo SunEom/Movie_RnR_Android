@@ -147,37 +147,37 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    public static class SearchFragment extends Fragment {
-        private static final String TAG ="SearchFragment";
-
-        MovieAdapter adapter;
-        RecyclerView recyclerView;
-
-        String keyword;
-
-        @Nullable
-        @Override
-        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_home,container, false);
-
-            EditText editText = getActivity().findViewById(R.id.search_keyword_input);
-            keyword = getArguments().getString("keyword");
-
-            Log.d(TAG,keyword);
-
-            recyclerView = rootView.findViewById(R.id.recyclerView_home);
-            LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
-            recyclerView.setLayoutManager(manager);
-
-            adapter = new MovieAdapter();
-            adapter.header_title = "Search Result for : "+keyword;
-            recyclerView.setAdapter(adapter);
-
-            if(keyword != null && !keyword.equals("")){
-                sRequest.requestSearchPostings(adapter, keyword);
-            }
-
-            return rootView;
-        }
-    }
+//    public static class SearchFragment extends Fragment {
+//        private static final String TAG ="SearchFragment";
+//
+//        MovieAdapter adapter;
+//        RecyclerView recyclerView;
+//
+//        String keyword;
+//
+//        @Nullable
+//        @Override
+//        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+//            View rootView = inflater.inflate(R.layout.fragment_home,container, false);
+//
+//            EditText editText = getActivity().findViewById(R.id.search_keyword_input);
+//            keyword = getArguments().getString("keyword");
+//
+//            Log.d(TAG,keyword);
+//
+//            recyclerView = rootView.findViewById(R.id.recyclerView_home);
+//            LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+//            recyclerView.setLayoutManager(manager);
+//
+//            adapter = new MovieAdapter();
+//            adapter.header_title = "Search Result for : "+keyword;
+//            recyclerView.setAdapter(adapter);
+//
+//            if(keyword != null && !keyword.equals("")){
+//                sRequest.requestSearchPostings(adapter, keyword, getActivity());
+//            }
+//
+//            return rootView;
+//        }
+//    }
 }
