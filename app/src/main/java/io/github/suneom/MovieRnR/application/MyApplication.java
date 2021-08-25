@@ -1,10 +1,14 @@
 package io.github.suneom.MovieRnR.application;
 
+import android.app.Activity;
 import android.app.Application;
+
+import androidx.fragment.app.FragmentManager;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+import io.github.suneom.MovieRnR.activity.MainActivity;
 import io.github.suneom.MovieRnR.custom_class.Login.LoginUserInfo;
 import io.github.suneom.MovieRnR.fragment.HomeFragment;
 
@@ -16,7 +20,7 @@ public class MyApplication extends Application {
 
     public static RequestQueue requestQueue;
 
-    public static LoginUserInfo my_info = null;
+    public static LoginUserInfo my_info;
 
     public final static HomeFragment homeFragment = new HomeFragment();
 
@@ -28,6 +32,10 @@ public class MyApplication extends Application {
             requestQueue = Volley.newRequestQueue(getApplicationContext());
         }
 
+    }
+
+    public static void setMyInfo(LoginUserInfo info){
+        my_info = info;
     }
 
 }

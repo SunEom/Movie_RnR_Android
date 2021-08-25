@@ -54,6 +54,7 @@ public class DetailFragment extends Fragment {
         recyclerView.setLayoutManager(manager);
 
         adapter = new CommentAdapter();
+        adapter.setFragmentManager(getActivity().getSupportFragmentManager());
 
         recyclerView.setAdapter(adapter);
 
