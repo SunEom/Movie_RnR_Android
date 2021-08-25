@@ -3,11 +3,15 @@ package io.github.suneom.MovieRnR.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -137,7 +141,7 @@ public class sRequest {
         MyApplication.requestQueue.add(request);
     }
 
-    public static void requestNewPosting(String title, String genres, String rates, String overview, Context context){
+    public static void requestNewPosting(String title, String genres, String rates, String overview, FragmentManager manager){
         new Thread(new Runnable() {
 
             @Override
@@ -163,8 +167,17 @@ public class sRequest {
 
                     okhttp3.Response response = client.newCall(request).execute();
 
-                    Intent intent = new Intent(context, MainActivity.class);
-                    context.startActivity(intent);
+                    String result = response.body().string();
+
+                    Gson gson = new Gson();
+                    PostReqResult info = gson.fromJson(result, PostReqResult.class);
+
+                    DetailFragment detailFragment = new DetailFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id", info.data.get(0).id);
+                    detailFragment.setArguments(bundle);
+
+                    manager.beginTransaction().replace(R.id.fragment_container, detailFragment).commit();
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
