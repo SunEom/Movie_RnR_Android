@@ -2,6 +2,7 @@ package io.github.suneom.MovieRnR.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -31,6 +33,7 @@ import io.github.suneom.MovieRnR.activity.MainActivity;
 import io.github.suneom.MovieRnR.application.MyApplication;
 import io.github.suneom.MovieRnR.custom_class.Comment.CommentResponse;
 import io.github.suneom.MovieRnR.custom_class.Detail.DetailResponse;
+import io.github.suneom.MovieRnR.custom_class.Join.DuplicationCheckResponse;
 import io.github.suneom.MovieRnR.custom_class.Login.LoginResponse;
 import io.github.suneom.MovieRnR.custom_class.Movie.Movie;
 import io.github.suneom.MovieRnR.custom_class.Movie.MovieData;
@@ -38,6 +41,7 @@ import io.github.suneom.MovieRnR.custom_class.Movie.PostReqResult;
 import io.github.suneom.MovieRnR.custom_class.Profile.ProfileData;
 import io.github.suneom.MovieRnR.custom_class.Profile.ProfileResponse;
 import io.github.suneom.MovieRnR.fragment.DetailFragment;
+import io.github.suneom.MovieRnR.fragment.JoinFragment;
 import io.github.suneom.MovieRnR.fragment.ProfileFragment;
 import io.github.suneom.MovieRnR.recycler_view.Adapter.CommentAdapter;
 import io.github.suneom.MovieRnR.recycler_view.Adapter.MovieAdapter;
@@ -468,4 +472,113 @@ public class sRequest {
         }).start();
     }
 
+    //Join 관련 Method
+
+    public static void requestConfirmIdDuplication(String id, JoinFragment fragment){
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient.Builder builder = new OkHttpClient.Builder();
+                    builder.cookieJar(myCookieJar);
+                    OkHttpClient client = builder.build();
+
+                    String url = MyApplication.SERVER_URL + "join/id";
+
+                    FormBody formBody = new FormBody.Builder()
+                            .add("id",id)
+                            .build();
+
+                    okhttp3.Request request = new okhttp3.Request.Builder()
+                            .url(url)
+                            .post(formBody)
+                            .build();
+
+                    okhttp3.Response response = client.newCall(request).execute();
+
+                    String result = response.body().string();
+
+                    Gson gson = new Gson();
+                    DuplicationCheckResponse info = gson.fromJson(result, DuplicationCheckResponse.class);
+
+                    if(info.already){
+                        fragment.getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                sUtil.CreateNewSimpleAlertDialog(fragment.getContext(),"This ID is already taken",  "Please enter another ID 😅");
+                            }
+                        });
+                        return;
+                    } else {
+                        fragment.getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                sUtil.CreateNewSimpleAlertDialog(fragment.getContext(),"",  "This ID is available 😃");
+                                fragment.isIdChecked = true;
+                            }
+                        });
+                        return;
+                    }
+
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    public static void requestConfirmNickDuplication(String nickname, JoinFragment fragment){
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient.Builder builder = new OkHttpClient.Builder();
+                    builder.cookieJar(myCookieJar);
+                    OkHttpClient client = builder.build();
+
+                    String url = MyApplication.SERVER_URL + "join/nick";
+
+                    FormBody formBody = new FormBody.Builder()
+                            .add("nickname",nickname)
+                            .build();
+
+                    okhttp3.Request request = new okhttp3.Request.Builder()
+                            .url(url)
+                            .post(formBody)
+                            .build();
+
+                    okhttp3.Response response = client.newCall(request).execute();
+
+                    String result = response.body().string();
+
+                    Gson gson = new Gson();
+                    DuplicationCheckResponse info = gson.fromJson(result, DuplicationCheckResponse.class);
+
+                    if(info.already){
+                        fragment.getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                sUtil.CreateNewSimpleAlertDialog(fragment.getContext(),"This Nickname is already taken",  "Please enter another nickname 😅");
+                            }
+                        });
+                        return;
+                    } else {
+                        fragment.getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                sUtil.CreateNewSimpleAlertDialog(fragment.getContext(),"",  "This nickname is available 😃");
+                                fragment.isNickChecked = true;
+                            }
+                        });
+                        return;
+                    }
+
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
 }
