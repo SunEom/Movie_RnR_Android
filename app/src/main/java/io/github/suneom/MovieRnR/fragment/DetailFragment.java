@@ -89,7 +89,13 @@ public class DetailFragment extends Fragment {
         edit_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                EditFragment editFragment = new EditFragment();
+                editFragment.movieId = movieId;
+                editFragment.titleValue = title.getText().toString();
+                editFragment.genresValue = genres.getText().toString();
+                editFragment.ratesValue = rates.getText().toString();
+                editFragment.overviewValue = overview.getText().toString();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, editFragment).commit();
             }
         });
 
