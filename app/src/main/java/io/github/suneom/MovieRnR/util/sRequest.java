@@ -278,6 +278,53 @@ public class sRequest {
         }).start();
     }
 
+    public static void requestPatchPosting(String title, String genres, String rates, String overview, int movieId, FragmentManager manager){
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient.Builder builder = new OkHttpClient.Builder();
+                    builder.cookieJar(myCookieJar);
+                    OkHttpClient client = builder.build();
+
+                    RequestBody formBody = new FormBody.Builder()
+                            .add("id", String.valueOf(movieId))
+                            .add("title", title)
+                            .add("genres", genres)
+                            .add("rates", rates)
+                            .add("overview", overview)
+                            .build();
+
+                    String url = MyApplication.SERVER_URL+"post/update";
+
+                    okhttp3.Request request = new okhttp3.Request.Builder()
+                            .url(url)
+                            .patch(formBody)
+                            .build();
+
+                    okhttp3.Response response = client.newCall(request).execute();
+
+                    String result = response.body().string();
+
+                    Gson gson = new Gson();
+                    PostReqResult info = gson.fromJson(result, PostReqResult.class);
+
+                    DetailFragment detailFragment = new DetailFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id", info.data.get(0).id);
+                    detailFragment.postingOwnerId = info.data.get(0).user_id;
+                    detailFragment.setArguments(bundle);
+
+                    manager.beginTransaction().replace(R.id.fragment_container, detailFragment).commit();
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
+    }
+
     //Comment 관련 Method
 
     public static void requestCommentList(CommentAdapter adapter, int posting_id, Activity activity){

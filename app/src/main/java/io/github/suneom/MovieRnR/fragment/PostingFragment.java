@@ -115,18 +115,16 @@ public class PostingFragment extends Fragment implements CompoundButton.OnChecke
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if(isChecked){
             selected_checkboxs.add((CheckBox)buttonView);
-            print_every_item(selected_checkboxs);
         } else {
             selected_checkboxs.remove((CheckBox)buttonView);
-            print_every_item(selected_checkboxs);
         }
     }
 
-    public static void print_every_item(ArrayList<CheckBox> checkBoxes){
-        for(CheckBox checkBox : checkBoxes){
-            Log.d("Posting",parseArrayItemToString(checkBoxes));
-        }
-    }
+//    public static void print_every_item(ArrayList<CheckBox> checkBoxes){
+//        for(CheckBox checkBox : checkBoxes){
+//            Log.d("Posting",parseArrayItemToString(checkBoxes));
+//        }
+//    }
 
     public static String parseArrayItemToString(ArrayList<CheckBox> checkBoxes){
         String result="";
