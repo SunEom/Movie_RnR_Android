@@ -32,6 +32,7 @@ import io.github.suneom.MovieRnR.activity.DetailActivity;
 import io.github.suneom.MovieRnR.activity.MainActivity;
 import io.github.suneom.MovieRnR.application.MyApplication;
 import io.github.suneom.MovieRnR.custom_class.Comment.CommentResponse;
+import io.github.suneom.MovieRnR.custom_class.Detail.DeleteResponse;
 import io.github.suneom.MovieRnR.custom_class.Detail.DetailResponse;
 import io.github.suneom.MovieRnR.custom_class.Join.DuplicationCheckResponse;
 import io.github.suneom.MovieRnR.custom_class.Login.LoginResponse;
@@ -229,6 +230,46 @@ public class sRequest {
                             fragment.setVisiblityAfterLoad();
                         }
                     });
+
+                } catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    public static void requestDeletePosting(int movieId, DetailFragment fragment){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient.Builder builder = new OkHttpClient.Builder();
+                    builder.cookieJar(myCookieJar);
+                    OkHttpClient client = builder.build();
+
+                    String url = MyApplication.SERVER_URL + "post/"+String.valueOf(movieId);
+
+                    okhttp3.Request request = new okhttp3.Request.Builder()
+                            .url(url)
+                            .delete()
+                            .build();
+
+                    okhttp3.Response response = client.newCall(request).execute();
+
+                    String result = response.body().string();
+
+                    Gson gson = new Gson();
+                    DeleteResponse info = gson.fromJson(result, DeleteResponse.class);
+
+                    if(info.getCode()==200){
+                        fragment.getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                sUtil.CreateNewSimpleAlertDialog(fragment.getContext(),"","Deleted Successfully!");
+                                fragment.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, MyApplication.homeFragment).commit();
+                            }
+                        });
+                    }
 
                 } catch(Exception e){
                     e.printStackTrace();

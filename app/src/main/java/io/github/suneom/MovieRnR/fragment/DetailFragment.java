@@ -2,7 +2,6 @@ package io.github.suneom.MovieRnR.fragment;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +36,7 @@ public class DetailFragment extends Fragment {
     ScrollView scrollView;
 
     EditText comment_input;
-    Button comment_button;
+    Button comment_button, delete_button, edit_button;
 
     LinearLayout button_group;
 
@@ -75,6 +74,8 @@ public class DetailFragment extends Fragment {
 
         comment_button = rootView.findViewById(R.id.comment_button);
         comment_input = rootView.findViewById(R.id.comment_input);
+        delete_button = rootView.findViewById(R.id.detail_delete_button);
+        edit_button = rootView.findViewById(R.id.detail_edit_button);
 
         button_group = rootView.findViewById(R.id.detail_button_group);
 
@@ -84,6 +85,21 @@ public class DetailFragment extends Fragment {
 
             comment_input.setHint("Leave a comment ...");
         }
+
+        edit_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        delete_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sUtil.CreatePostDeleteCheckAlertDialog(movieId, DetailFragment.this);
+            }
+        });
+
         comment_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
