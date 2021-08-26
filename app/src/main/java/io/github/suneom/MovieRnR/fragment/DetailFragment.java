@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -38,7 +39,10 @@ public class DetailFragment extends Fragment {
     EditText comment_input;
     Button comment_button;
 
+    LinearLayout button_group;
+
     int movieId;
+    public int postingOwnerId;
 
     @Nullable
     @Override
@@ -71,6 +75,8 @@ public class DetailFragment extends Fragment {
 
         comment_button = rootView.findViewById(R.id.comment_button);
         comment_input = rootView.findViewById(R.id.comment_input);
+
+        button_group = rootView.findViewById(R.id.detail_button_group);
 
         if(MyApplication.my_info != null){
             comment_input.setEnabled(true);
@@ -128,6 +134,10 @@ public class DetailFragment extends Fragment {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,profileFragment).commit();
             }
         });
+
+        if(MyApplication.my_info != null && MyApplication.my_info.id == postingOwnerId){
+            button_group.setVisibility(View.VISIBLE);
+        }
     }
 
     public void setVisiblityAfterLoad(){

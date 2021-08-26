@@ -1,13 +1,8 @@
 package io.github.suneom.MovieRnR.custom_class.Detail;
 
 public class DetailResponse {
-    int code;
-    DetailData data;
-
-    public DetailResponse(int code, DetailData data) {
-        this.code = code;
-        this.data = data;
-    }
+    public int code;
+    public DetailData data;
 
     public int getCode() {
         return code;
@@ -24,4 +19,11 @@ public class DetailResponse {
     public void setData(DetailData data) {
         this.data = data;
     }
+
+    public DetailResponse(int code, DetailData data) {
+        this.code = code;
+        this.data = data;
+    }
+
+
 }

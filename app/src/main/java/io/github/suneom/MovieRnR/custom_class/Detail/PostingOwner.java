@@ -1,8 +1,8 @@
 package io.github.suneom.MovieRnR.custom_class.Detail;
 
 public class PostingOwner {
-    int id;
-    String nickname;
+    public int id;
+    public String nickname;
 
     public PostingOwner(int id, String nickname) {
         this.id = id;

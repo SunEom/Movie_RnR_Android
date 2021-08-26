@@ -3,8 +3,8 @@ package io.github.suneom.MovieRnR.custom_class.Detail;
 import io.github.suneom.MovieRnR.custom_class.Movie.MovieData;
 
 public class DetailData {
-    MovieData movie;
-    PostingOwner user;
+    public MovieData movie;
+    public PostingOwner user;
 
     public DetailData(MovieData movie, PostingOwner user) {
         this.movie = movie;

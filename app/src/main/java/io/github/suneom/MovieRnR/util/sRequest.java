@@ -187,6 +187,7 @@ public class sRequest {
                     DetailFragment detailFragment = new DetailFragment();
                     Bundle bundle = new Bundle();
                     bundle.putInt("id", info.data.get(0).id);
+                    detailFragment.postingOwnerId = info.data.get(0).user_id;
                     detailFragment.setArguments(bundle);
 
                     manager.beginTransaction().replace(R.id.fragment_container, detailFragment).commit();
@@ -223,6 +224,7 @@ public class sRequest {
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            fragment.postingOwnerId = info.data.user.id;
                             fragment.setInfo(info.getData().getMovie(), info.getData().getUser());
                             fragment.setVisiblityAfterLoad();
                         }
