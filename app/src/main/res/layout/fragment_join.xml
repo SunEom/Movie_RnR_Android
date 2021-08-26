@@ -55,9 +55,11 @@
                             android:id="@+id/join_id"
                             android:layout_width="0dp"
                             android:layout_height="35dp"
-                            android:layout_weight="1"
                             android:layout_marginRight="9dp"
-                            android:background="@drawable/text_input"/>
+                            android:layout_weight="1"
+                            android:background="@drawable/text_input"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp" />
 
                         <Button
                             android:id="@+id/join_id_confirm_button"
@@ -77,11 +79,13 @@
                     <EditText
                         android:id="@+id/join_password"
                         android:layout_width="match_parent"
-                        android:inputType="textPassword"
                         android:layout_height="35dp"
-                        android:layout_weight="1"
                         android:layout_marginRight="9dp"
-                        android:background="@drawable/text_input"/>
+                        android:layout_weight="1"
+                        android:background="@drawable/text_input"
+                        android:inputType="textPassword"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -93,12 +97,13 @@
                     <EditText
                         android:id="@+id/join_password_check"
                         android:layout_width="match_parent"
-                        android:inputType="textPassword"
                         android:layout_height="35dp"
-                        android:layout_weight="1"
                         android:layout_marginRight="9dp"
-                        android:background="@drawable/text_input"/>
-
+                        android:layout_weight="1"
+                        android:background="@drawable/text_input"
+                        android:inputType="textPassword"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp" />
 
 
                     <TextView
@@ -117,9 +122,11 @@
                             android:id="@+id/join_nick"
                             android:layout_width="0dp"
                             android:layout_height="35dp"
-                            android:layout_weight="1"
                             android:layout_marginRight="9dp"
-                            android:background="@drawable/text_input"/>
+                            android:layout_weight="1"
+                            android:background="@drawable/text_input"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp" />
 
                         <Button
                             android:id="@+id/join_nick_confirm_button"
@@ -128,6 +135,33 @@
                             android:text="Confirmation"/>
 
                     </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Gender"
+                        android:layout_marginTop="20dp"
+                        android:textColor="@color/black"/>
+                    <RadioGroup
+                        android:id="@+id/gender_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/gender_man"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Man" />
+
+                        <RadioButton
+                            android:id="@+id/gender_woman"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Woman" />
+                    </RadioGroup>
 
                     <LinearLayout
                         android:layout_width="match_parent"

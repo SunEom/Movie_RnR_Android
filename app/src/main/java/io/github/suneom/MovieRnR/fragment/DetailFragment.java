@@ -2,12 +2,12 @@ package io.github.suneom.MovieRnR.fragment;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -36,9 +36,12 @@ public class DetailFragment extends Fragment {
     ScrollView scrollView;
 
     EditText comment_input;
-    Button comment_button;
+    Button comment_button, delete_button, edit_button;
+
+    LinearLayout button_group;
 
     int movieId;
+    public int postingOwnerId;
 
     @Nullable
     @Override
@@ -71,6 +74,10 @@ public class DetailFragment extends Fragment {
 
         comment_button = rootView.findViewById(R.id.comment_button);
         comment_input = rootView.findViewById(R.id.comment_input);
+        delete_button = rootView.findViewById(R.id.detail_delete_button);
+        edit_button = rootView.findViewById(R.id.detail_edit_button);
+
+        button_group = rootView.findViewById(R.id.detail_button_group);
 
         if(MyApplication.my_info != null){
             comment_input.setEnabled(true);
@@ -78,6 +85,27 @@ public class DetailFragment extends Fragment {
 
             comment_input.setHint("Leave a comment ...");
         }
+
+        edit_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditFragment editFragment = new EditFragment();
+                editFragment.movieId = movieId;
+                editFragment.titleValue = title.getText().toString();
+                editFragment.genresValue = genres.getText().toString();
+                editFragment.ratesValue = rates.getText().toString();
+                editFragment.overviewValue = overview.getText().toString();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, editFragment).commit();
+            }
+        });
+
+        delete_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sUtil.CreatePostDeleteCheckAlertDialog(movieId, DetailFragment.this);
+            }
+        });
+
         comment_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,6 +156,10 @@ public class DetailFragment extends Fragment {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,profileFragment).commit();
             }
         });
+
+        if(MyApplication.my_info != null && MyApplication.my_info.id == postingOwnerId){
+            button_group.setVisibility(View.VISIBLE);
+        }
     }
 
     public void setVisiblityAfterLoad(){
