@@ -41,6 +41,7 @@ import io.github.suneom.MovieRnR.custom_class.Movie.PostReqResult;
 import io.github.suneom.MovieRnR.custom_class.Profile.ProfileData;
 import io.github.suneom.MovieRnR.custom_class.Profile.ProfileResponse;
 import io.github.suneom.MovieRnR.fragment.DetailFragment;
+import io.github.suneom.MovieRnR.fragment.HomeFragment;
 import io.github.suneom.MovieRnR.fragment.JoinFragment;
 import io.github.suneom.MovieRnR.fragment.ProfileFragment;
 import io.github.suneom.MovieRnR.recycler_view.Adapter.CommentAdapter;
@@ -573,6 +574,55 @@ public class sRequest {
                             }
                         });
                         return;
+                    }
+
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    public static void requestJoinUser(String id, String password, String nickname, String gender, JoinFragment fragment){
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient.Builder builder = new OkHttpClient.Builder();
+                    builder.cookieJar(myCookieJar);
+                    OkHttpClient client = builder.build();
+
+                    String url = MyApplication.SERVER_URL + "join/";
+
+                    FormBody formBody = new FormBody.Builder()
+                            .add("id",id)
+                            .add("password",password)
+                            .add("nickname",nickname)
+                            .add("gender",gender)
+                            .build();
+
+                    okhttp3.Request request = new okhttp3.Request.Builder()
+                            .url(url)
+                            .post(formBody)
+                            .build();
+
+                    okhttp3.Response response = client.newCall(request).execute();
+
+                    String result = response.body().string();
+
+                    Gson gson = new Gson();
+                    LoginResponse info = gson.fromJson(result, LoginResponse.class);
+
+                    if(info.getData() != null){
+                        MyApplication.setMyInfo(info.getData());
+                        fragment.getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                sUtil.CreateNewSimpleAlertDialog(fragment.getContext(), "","Successfully joined!");
+                            }
+                        });
+                        fragment.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, MyApplication.homeFragment).commit();
                     }
 
                 } catch (Exception e){
