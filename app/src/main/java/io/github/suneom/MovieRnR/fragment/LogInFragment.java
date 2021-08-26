@@ -41,9 +41,8 @@ public class LogInFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String id_value = id.getText().toString();
-                String password_value = password.getText().toString();
-                sRequest.requestLoginGet(getContext());
+                JoinFragment joinFragment = new JoinFragment();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, joinFragment).commit();
             }
         });
 
