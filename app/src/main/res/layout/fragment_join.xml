@@ -52,6 +52,7 @@
                         android:gravity="center_vertical">
 
                         <EditText
+                            android:id="@+id/join_id"
                             android:layout_width="0dp"
                             android:layout_height="35dp"
                             android:layout_weight="1"
@@ -59,6 +60,7 @@
                             android:background="@drawable/text_input"/>
 
                         <Button
+                            android:id="@+id/join_id_confirm_button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Confirmation"/>
@@ -73,6 +75,7 @@
                         android:textColor="@color/black"/>
 
                     <EditText
+                        android:id="@+id/join_password"
                         android:layout_width="match_parent"
                         android:inputType="textPassword"
                         android:layout_height="35dp"
@@ -88,6 +91,7 @@
                         android:textColor="@color/black"/>
 
                     <EditText
+                        android:id="@+id/join_password_check"
                         android:layout_width="match_parent"
                         android:inputType="textPassword"
                         android:layout_height="35dp"
@@ -110,6 +114,7 @@
                         android:gravity="center_vertical">
 
                         <EditText
+                            android:id="@+id/join_nick"
                             android:layout_width="0dp"
                             android:layout_height="35dp"
                             android:layout_weight="1"
@@ -117,6 +122,7 @@
                             android:background="@drawable/text_input"/>
 
                         <Button
+                            android:id="@+id/join_nick_confirm_button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Confirmation"/>
@@ -129,6 +135,7 @@
                         android:layout_marginTop="25dp"
                         android:gravity="right">
                         <Button
+                            android:id="@+id/join_save_button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Save"/>
