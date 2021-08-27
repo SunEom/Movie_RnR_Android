@@ -68,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
         logInFragment = new LogInFragment();
         profileFragment = new ProfileFragment();
 
-
         settingBasicUI();
+
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
 
     }
