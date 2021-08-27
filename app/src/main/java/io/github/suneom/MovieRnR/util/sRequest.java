@@ -459,7 +459,7 @@ public class sRequest {
         }).start();
     }
 
-    public static void requestLoginGet(Context context){
+    public static void requestLoginGet(Activity activity){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -484,6 +484,12 @@ public class sRequest {
                     LoginResponse info = gson.fromJson(result, LoginResponse.class);
 
                     MyApplication.setMyInfo(info.data);
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((MainActivity)activity).setMenuAccessControl();
+                        }
+                    });
 
                 } catch(Exception e) {
                     e.printStackTrace();
@@ -493,7 +499,7 @@ public class sRequest {
 
     }
 
-    public static void requestLogout(){
+    public static void requestLogout(Activity activity){
         new Thread(new Runnable() {
 
             @Override
@@ -510,7 +516,15 @@ public class sRequest {
                             .build();
 
                     okhttp3.Response response = client.newCall(request).execute();
+
                     MyApplication.setMyInfo(null);
+
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((MainActivity)activity).setMenuAccessControl();
+                        }
+                    });
 
                 } catch(Exception e) {
                     e.printStackTrace();
