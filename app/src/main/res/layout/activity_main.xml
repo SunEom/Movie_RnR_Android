@@ -30,6 +30,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="#9E9E9E"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:gravity="center_vertical">
@@ -38,18 +39,18 @@
                         android:id="@+id/action_bar_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="MOVIE R&amp;R"
-                        android:textSize="21sp"
-                        android:textStyle="bold"
                         android:layout_marginRight="5dp"
-                        android:textColor="@color/black"/>
+                        android:text="MOVIE R&amp;R"
+                        android:textColor="@color/black"
+                        android:textSize="21sp"
+                        android:textStyle="bold" />
 
                     <ImageView
                         android:id="@+id/action_bar_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/header_icon"
-                        android:layout_marginRight="20dp"/>
+                        android:layout_marginRight="20dp"
+                        app:srcCompat="@drawable/header_icon" />
 
                     <EditText
                         android:id="@+id/search_keyword_input"
@@ -58,11 +59,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="3dp"
                         android:layout_marginRight="10dp"
+                        android:backgroundTint="#E1E2E1"
                         android:hint="검색"
                         android:imeActionId="1337"
-                        android:inputType="text"
                         android:imeOptions="actionDone"
-                        android:backgroundTint="#E1E2E1"/>
+                        android:inputType="text" />
 
                 </LinearLayout>
 
