@@ -29,6 +29,7 @@ import com.google.android.material.navigation.NavigationView;
 import io.github.suneom.MovieRnR.application.MyApplication;
 import io.github.suneom.MovieRnR.R;
 import io.github.suneom.MovieRnR.fragment.DetailFragment;
+import io.github.suneom.MovieRnR.fragment.EditFragment;
 import io.github.suneom.MovieRnR.fragment.HomeFragment;
 import io.github.suneom.MovieRnR.fragment.JoinFragment;
 import io.github.suneom.MovieRnR.fragment.LogInFragment;
@@ -85,26 +86,16 @@ public class MainActivity extends AppCompatActivity {
         }else if(curFragment instanceof PostingFragment){
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
         } else if(curFragment instanceof DetailFragment){
-            if(curFragment.getArguments().getString("keyword") == null){
-                //HomeFragment 에서 DetailFragment로 접근한 경우
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
-            } else {
-                //SearchFragment 에서 DetailFragment로 접근한 경우
-                SearchFragment searchFragment = new SearchFragment();
-                int id = getSupportFragmentManager().findFragmentById(R.id.fragment_container).getArguments().getInt("id");
-                String keyword = getSupportFragmentManager().findFragmentById(R.id.fragment_container).getArguments().getString("keyword");
-
-                Bundle bundle = new Bundle();
-                bundle.putString("keyword",keyword);
-                searchFragment.setArguments(bundle);
-
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,searchFragment).commit();
-            }
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
         } else if(curFragment instanceof SearchFragment){
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
         } else if(curFragment instanceof JoinFragment){
             LogInFragment logInFragment = new LogInFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, logInFragment).commit();
+        } else if(curFragment instanceof EditFragment){
+            DetailFragment detailFragment = new DetailFragment();
+            detailFragment.movieId = ((EditFragment) curFragment).movieId;
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, detailFragment).commit();
         } else {
             super.onBackPressed();
         }

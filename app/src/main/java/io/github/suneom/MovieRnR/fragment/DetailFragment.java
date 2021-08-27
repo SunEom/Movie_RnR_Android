@@ -40,7 +40,7 @@ public class DetailFragment extends Fragment {
 
     LinearLayout button_group;
 
-    int movieId;
+    public int movieId;
     public int postingOwnerId;
 
     @Nullable
