@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -171,6 +172,14 @@ public class MainActivity extends AppCompatActivity {
 
         TextView actionBar_title = toolbar.findViewById(R.id.action_bar_title);
         actionBar_title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
+            }
+        });
+
+        ImageView actionBar_icon = toolbar.findViewById(R.id.action_bar_icon);
+        actionBar_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
