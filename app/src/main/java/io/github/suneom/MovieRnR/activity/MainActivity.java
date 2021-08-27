@@ -145,15 +145,19 @@ public class MainActivity extends AppCompatActivity {
                 switch(id){
                     case R.id.mypage_menu:
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, profileFragment).commit();
+                        item.setChecked(false);
                         break;
                     case R.id.posting_menu:
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, postingFragment).commit();
+                        item.setChecked(false);
                         break;
                     case R.id.logout_menu:
                         sRequest.requestLogout(MainActivity.this);
+                        item.setChecked(false);
                         break;
                     case R.id.login_menu:
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, logInFragment).commit();
+                        item.setChecked(false);
                         break;
                     default:
                         break;
