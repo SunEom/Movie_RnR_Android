@@ -30,6 +30,7 @@ import io.github.suneom.MovieRnR.application.MyApplication;
 import io.github.suneom.MovieRnR.R;
 import io.github.suneom.MovieRnR.fragment.DetailFragment;
 import io.github.suneom.MovieRnR.fragment.HomeFragment;
+import io.github.suneom.MovieRnR.fragment.JoinFragment;
 import io.github.suneom.MovieRnR.fragment.LogInFragment;
 import io.github.suneom.MovieRnR.fragment.PostingFragment;
 import io.github.suneom.MovieRnR.fragment.ProfileFragment;
@@ -101,6 +102,9 @@ public class MainActivity extends AppCompatActivity {
             }
         } else if(curFragment instanceof SearchFragment){
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
+        } else if(curFragment instanceof JoinFragment){
+            LogInFragment logInFragment = new LogInFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, logInFragment).commit();
         } else {
             super.onBackPressed();
         }
