@@ -1,14 +1,10 @@
 package io.github.suneom.MovieRnR.util;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.hardware.input.InputManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethod;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +25,7 @@ import java.util.Map;
 
 import io.github.suneom.MovieRnR.R;
 import io.github.suneom.MovieRnR.activity.MainActivity;
+import io.github.suneom.MovieRnR.activity.SplashActivity;
 import io.github.suneom.MovieRnR.application.MyApplication;
 import io.github.suneom.MovieRnR.custom_class.Comment.CommentResponse;
 import io.github.suneom.MovieRnR.custom_class.Detail.DeleteResponse;
@@ -399,8 +396,6 @@ public class sRequest {
 
                     String result = response.body().string();
 
-                    Log.d("New Comment",result);
-
                     requestCommentList(adapter,Integer.parseInt(posting_id),activity);
 
                 } catch(Exception e){
@@ -412,7 +407,7 @@ public class sRequest {
 
     //Authentication 관련 Method
 
-    public static void requestLoginPost(String id, String password, Activity activity){
+    public static void requestLoginPost(String id, String password, boolean shouldRemember, Activity activity){
 
         new Thread(new Runnable() {
 
@@ -431,13 +426,11 @@ public class sRequest {
                     String url = MyApplication.SERVER_URL+"auth/login";
 
                     okhttp3.Request request = new okhttp3.Request.Builder()
-                            .addHeader("Authorization", Credentials.basic(id, password))
                             .url(url)
                             .post(formBody)
                             .build();
 
                     okhttp3.Response response = client.newCall(request).execute();
-
 
                     String result = response.body().string();
 
@@ -445,22 +438,36 @@ public class sRequest {
                     LoginResponse info = gson.fromJson(result, LoginResponse.class);
 
                     MyApplication.setMyInfo(info.data);
-
-                    if(info.data != null){
-                        Intent intent = new Intent(activity.getApplicationContext(), MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        activity.getApplicationContext().startActivity(intent);
-                    } else {
-                        activity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-//                                sUtil.CreateNewSimpleAlertDialog(activity.getApplicationContext(), "","Please check ID or Password");
-                                Toast.makeText(activity.getApplicationContext(), "Please check ID or Password",Toast.LENGTH_LONG).show();
+                    if(activity instanceof MainActivity) {
+                        if (info.data != null) {
+                            if(shouldRemember){
+                                databaseMethod.deleteLoginInfo();
+                                databaseMethod.insertLoginInfo(id, password);
+                            }else {
+                                databaseMethod.deleteLoginInfo();
                             }
-                        });
+                            Intent intent = new Intent(activity.getApplicationContext(), MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            activity.getApplicationContext().startActivity(intent);
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ((MainActivity)activity).finishLoading();
+                                }
+                            });
+                        } else {
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+//                                sUtil.CreateNewSimpleAlertDialog(activity.getApplicationContext(), "","Please check ID or Password");
+                                    Toast.makeText(activity.getApplicationContext(), "Please check ID or Password", Toast.LENGTH_LONG).show();
+                                    ((MainActivity)activity).finishLoading();
+                                }
+                            });
+                        }
+                    } else if(activity instanceof SplashActivity) {
+                        ((SplashActivity) activity).startMainActivity();
                     }
-
-
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
@@ -532,7 +539,10 @@ public class sRequest {
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            databaseMethod.deleteLoginInfo();
+                            ((MainActivity)activity).finishLoading();
                             ((MainActivity)activity).setMenuAccessControl();
+                            ((MainActivity) activity).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, MyApplication.homeFragment).commit();
                         }
                     });
 

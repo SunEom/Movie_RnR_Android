@@ -1,6 +1,7 @@
 package io.github.suneom.MovieRnR.fragment;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -17,6 +19,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import io.github.suneom.MovieRnR.R;
+import io.github.suneom.MovieRnR.activity.MainActivity;
+import io.github.suneom.MovieRnR.application.MyApplication;
 import io.github.suneom.MovieRnR.util.sRequest;
 import io.github.suneom.MovieRnR.util.sUtil;
 
@@ -24,6 +28,7 @@ public class LogInFragment extends Fragment {
 
     EditText id, password;
     Button loginButton;
+    CheckBox remember;
 
     @Nullable
     @Override
@@ -33,6 +38,7 @@ public class LogInFragment extends Fragment {
         id = rootView.findViewById(R.id.login_edittext_id);
         password = rootView.findViewById(R.id.login_edittext_password);
         loginButton = rootView.findViewById(R.id.login_button);
+        remember =rootView.findViewById(R.id.login_remember_check);
 
         id.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -64,7 +70,9 @@ public class LogInFragment extends Fragment {
                     sUtil.CreateNewSimpleAlertDialog(getContext(), "","비밀번호를 입력해주세요");
                     return;
                 }
-                sRequest.requestLoginPost(id_value, password_value, getActivity());
+
+                ((MainActivity)getActivity()).startLoading();
+                sRequest.requestLoginPost(id_value, password_value, remember.isChecked(), getActivity());
             }
         });
 
