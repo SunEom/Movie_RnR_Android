@@ -1,5 +1,6 @@
 package io.github.suneom.MovieRnR.recycler_view.ViewHolder;
 
+import android.graphics.Color;
 import android.view.View;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ public class HeaderViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
 
         headerViewHolderTitle = itemView.findViewById(R.id.header_viewholder_title);
+        headerViewHolderTitle.setTextColor(Color.BLACK);
         headerViewHolderTitle.setText(title);
     }
 }
