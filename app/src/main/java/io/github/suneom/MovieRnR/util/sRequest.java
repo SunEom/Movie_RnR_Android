@@ -29,6 +29,7 @@ import java.util.Map;
 
 import io.github.suneom.MovieRnR.R;
 import io.github.suneom.MovieRnR.activity.MainActivity;
+import io.github.suneom.MovieRnR.activity.SplashActivity;
 import io.github.suneom.MovieRnR.application.MyApplication;
 import io.github.suneom.MovieRnR.custom_class.Comment.CommentResponse;
 import io.github.suneom.MovieRnR.custom_class.Detail.DeleteResponse;
@@ -445,22 +446,23 @@ public class sRequest {
                     LoginResponse info = gson.fromJson(result, LoginResponse.class);
 
                     MyApplication.setMyInfo(info.data);
-
-                    if(info.data != null){
-                        Intent intent = new Intent(activity.getApplicationContext(), MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        activity.getApplicationContext().startActivity(intent);
-                    } else {
-                        activity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
+                    if(activity instanceof MainActivity) {
+                        if (info.data != null) {
+                            Intent intent = new Intent(activity.getApplicationContext(), MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            activity.getApplicationContext().startActivity(intent);
+                        } else {
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
 //                                sUtil.CreateNewSimpleAlertDialog(activity.getApplicationContext(), "","Please check ID or Password");
-                                Toast.makeText(activity.getApplicationContext(), "Please check ID or Password",Toast.LENGTH_LONG).show();
-                            }
-                        });
+                                    Toast.makeText(activity.getApplicationContext(), "Please check ID or Password", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+                    } else if(activity instanceof SplashActivity) {
+                        ((SplashActivity) activity).startMainActivity();
                     }
-
-
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
