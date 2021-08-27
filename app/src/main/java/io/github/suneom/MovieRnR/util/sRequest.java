@@ -2,7 +2,6 @@ package io.github.suneom.MovieRnR.util;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,9 +9,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.android.volley.AuthFailureError;
@@ -28,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 
 import io.github.suneom.MovieRnR.R;
-import io.github.suneom.MovieRnR.activity.DetailActivity;
 import io.github.suneom.MovieRnR.activity.MainActivity;
 import io.github.suneom.MovieRnR.application.MyApplication;
 import io.github.suneom.MovieRnR.custom_class.Comment.CommentResponse;
@@ -42,7 +37,6 @@ import io.github.suneom.MovieRnR.custom_class.Movie.PostReqResult;
 import io.github.suneom.MovieRnR.custom_class.Profile.ProfileData;
 import io.github.suneom.MovieRnR.custom_class.Profile.ProfileResponse;
 import io.github.suneom.MovieRnR.fragment.DetailFragment;
-import io.github.suneom.MovieRnR.fragment.HomeFragment;
 import io.github.suneom.MovieRnR.fragment.JoinFragment;
 import io.github.suneom.MovieRnR.fragment.ProfileFragment;
 import io.github.suneom.MovieRnR.recycler_view.Adapter.CommentAdapter;
