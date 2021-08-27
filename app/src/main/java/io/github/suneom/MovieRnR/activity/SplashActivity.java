@@ -19,14 +19,16 @@ public class SplashActivity extends AppCompatActivity {
         setDb();
 
         Cursor cursor = MyApplication.database.rawQuery("select id, password from users order by _id DESC limit 1",null);
-        if(cursor.getCount()!=0){
+        if(cursor.getCount() != 0){
             cursor.moveToNext();
             String id = cursor.getString(0);
             String password = cursor.getString(1);
 
-            sRequest.requestLoginPost(id, password, this);
-
+            sRequest.requestLoginPost(id, password, false, this);
+        } else {
+            startMainActivity();
         }
+
 
     }
 

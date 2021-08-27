@@ -58,7 +58,7 @@
         app:layout_constraintTop_toBottomOf="@+id/login_edittext_id" />
 
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/login_remember_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Remember me"
@@ -78,7 +78,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.737"
-        app:layout_constraintStart_toEndOf="@+id/checkBox"
+        app:layout_constraintStart_toEndOf="@+id/login_remember_check"
         app:layout_constraintTop_toBottomOf="@+id/login_edittext_password"
         app:layout_constraintVertical_bias="0.075" />
 
@@ -96,7 +96,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+        app:layout_constraintTop_toBottomOf="@+id/login_remember_check" />
 
     <Button
         android:id="@+id/new_account_button"

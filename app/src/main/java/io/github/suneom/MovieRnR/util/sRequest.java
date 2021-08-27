@@ -1,14 +1,10 @@
 package io.github.suneom.MovieRnR.util;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.hardware.input.InputManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethod;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -400,8 +396,6 @@ public class sRequest {
 
                     String result = response.body().string();
 
-                    Log.d("New Comment",result);
-
                     requestCommentList(adapter,Integer.parseInt(posting_id),activity);
 
                 } catch(Exception e){
@@ -413,7 +407,7 @@ public class sRequest {
 
     //Authentication 관련 Method
 
-    public static void requestLoginPost(String id, String password, Activity activity){
+    public static void requestLoginPost(String id, String password, boolean shouldRemember, Activity activity){
 
         new Thread(new Runnable() {
 
@@ -439,7 +433,6 @@ public class sRequest {
 
                     okhttp3.Response response = client.newCall(request).execute();
 
-
                     String result = response.body().string();
 
                     Gson gson = new Gson();
@@ -448,6 +441,12 @@ public class sRequest {
                     MyApplication.setMyInfo(info.data);
                     if(activity instanceof MainActivity) {
                         if (info.data != null) {
+                            if(shouldRemember){
+                                databaseMethod.deleteLoginInfo();
+                                databaseMethod.insertLoginInfo(id, password);
+                            }else {
+                                databaseMethod.deleteLoginInfo();
+                            }
                             Intent intent = new Intent(activity.getApplicationContext(), MainActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             activity.getApplicationContext().startActivity(intent);
@@ -534,7 +533,11 @@ public class sRequest {
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            databaseMethod.deleteLoginInfo();
                             ((MainActivity)activity).setMenuAccessControl();
+                            Intent intent = new Intent(activity.getApplicationContext(), MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            activity.getApplicationContext().startActivity(intent);
                         }
                     });
 
