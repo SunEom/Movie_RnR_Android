@@ -2,17 +2,17 @@ package io.github.suneom.MovieRnR.util;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.hardware.input.InputManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethod;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.android.volley.AuthFailureError;
@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 
 import io.github.suneom.MovieRnR.R;
-import io.github.suneom.MovieRnR.activity.DetailActivity;
 import io.github.suneom.MovieRnR.activity.MainActivity;
 import io.github.suneom.MovieRnR.application.MyApplication;
 import io.github.suneom.MovieRnR.custom_class.Comment.CommentResponse;
@@ -42,7 +41,6 @@ import io.github.suneom.MovieRnR.custom_class.Movie.PostReqResult;
 import io.github.suneom.MovieRnR.custom_class.Profile.ProfileData;
 import io.github.suneom.MovieRnR.custom_class.Profile.ProfileResponse;
 import io.github.suneom.MovieRnR.fragment.DetailFragment;
-import io.github.suneom.MovieRnR.fragment.HomeFragment;
 import io.github.suneom.MovieRnR.fragment.JoinFragment;
 import io.github.suneom.MovieRnR.fragment.ProfileFragment;
 import io.github.suneom.MovieRnR.recycler_view.Adapter.CommentAdapter;
@@ -414,7 +412,7 @@ public class sRequest {
 
     //Authentication 관련 Method
 
-    public static void requestLoginPost(String id, String password, Context context){
+    public static void requestLoginPost(String id, String password, Activity activity){
 
         new Thread(new Runnable() {
 
@@ -448,8 +446,20 @@ public class sRequest {
 
                     MyApplication.setMyInfo(info.data);
 
-                    Intent intent = new Intent(context, MainActivity.class);
-                    context.startActivity(intent);
+                    if(info.data != null){
+                        Intent intent = new Intent(activity.getApplicationContext(), MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        activity.getApplicationContext().startActivity(intent);
+                    } else {
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+//                                sUtil.CreateNewSimpleAlertDialog(activity.getApplicationContext(), "","Please check ID or Password");
+                                Toast.makeText(activity.getApplicationContext(), "Please check ID or Password",Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+
 
                 } catch(Exception e) {
                     e.printStackTrace();
@@ -459,7 +469,7 @@ public class sRequest {
         }).start();
     }
 
-    public static void requestLoginGet(Context context){
+    public static void requestLoginGet(Activity activity){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -484,6 +494,12 @@ public class sRequest {
                     LoginResponse info = gson.fromJson(result, LoginResponse.class);
 
                     MyApplication.setMyInfo(info.data);
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((MainActivity)activity).setMenuAccessControl();
+                        }
+                    });
 
                 } catch(Exception e) {
                     e.printStackTrace();
@@ -493,7 +509,7 @@ public class sRequest {
 
     }
 
-    public static void requestLogout(){
+    public static void requestLogout(Activity activity){
         new Thread(new Runnable() {
 
             @Override
@@ -510,7 +526,15 @@ public class sRequest {
                             .build();
 
                     okhttp3.Response response = client.newCall(request).execute();
+
                     MyApplication.setMyInfo(null);
+
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((MainActivity)activity).setMenuAccessControl();
+                        }
+                    });
 
                 } catch(Exception e) {
                     e.printStackTrace();

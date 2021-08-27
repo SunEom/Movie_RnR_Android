@@ -29,17 +29,25 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:id="@+id/action_bar_title"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="MOVIE R&amp;R 🎬"
+                        android:text="MOVIE R&amp;R"
                         android:textSize="21sp"
                         android:textStyle="bold"
+                        android:layout_marginRight="5dp"
                         android:textColor="@color/black"/>
+
+                    <ImageView
+                        android:id="@+id/action_bar_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/header_icon"
+                        android:layout_marginRight="20dp"/>
 
                     <EditText
                         android:id="@+id/search_keyword_input"

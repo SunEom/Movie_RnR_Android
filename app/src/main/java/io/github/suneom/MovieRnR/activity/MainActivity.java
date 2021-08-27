@@ -14,11 +14,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,11 +43,34 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     Window window;
 
+    NavigationView navigationView;
+
     HomeFragment homeFragment;
     SearchFragment searchFragment;
     PostingFragment postingFragment;
     LogInFragment logInFragment;
     ProfileFragment profileFragment;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        //변수 초기화
+        toolbar = findViewById(R.id.toolbar);
+        window = getWindow();
+        homeFragment = MyApplication.homeFragment;
+        drawer = findViewById(R.id.drawer_layout);
+
+        postingFragment = new PostingFragment();
+        logInFragment = new LogInFragment();
+        profileFragment = new ProfileFragment();
+
+
+        settingBasicUI();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
+
+    }
 
     @Override
     public void onBackPressed() {
@@ -81,29 +106,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        
-        //변수 초기화
-        toolbar = findViewById(R.id.toolbar);
-        window = getWindow();
-        homeFragment = MyApplication.homeFragment;
-        drawer = findViewById(R.id.drawer_layout);
-
-        postingFragment = new PostingFragment();
-        logInFragment = new LogInFragment();
-        profileFragment = new ProfileFragment();
-
-        settingBasicUI();
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
-
-
+    public void setMenuAccessControl(){
+        Menu menu = navigationView.getMenu();
+        if(MyApplication.my_info == null){
+            //로그인이 되어있지 않은 경우
+            Log.d("Menu","Login");
+            menu.getItem(0).setVisible(true);
+            menu.getItem(1).setVisible(false);
+            menu.getItem(2).setVisible(false);
+            menu.getItem(3).setVisible(false);
+        } else {
+            //로그인이 되어있는 경우
+            Log.d("Menu","NOT Login");
+            menu.getItem(0).setVisible(false);
+            menu.getItem(1).setVisible(true);
+            menu.getItem(2).setVisible(true);
+            menu.getItem(3).setVisible(true);
+        }
     }
-
-
 
     public void settingBasicUI(){
 
@@ -114,7 +134,9 @@ public class MainActivity extends AppCompatActivity {
         drawer.addDrawerListener(toggle); // Drawer Nav에 Toggle 버튼 추가
         toggle.syncState();
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
+
+        navigationView = findViewById(R.id.nav_view);
+
         //navigation 메뉴 선택시 실행되는 Listener 설정
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -122,18 +144,21 @@ public class MainActivity extends AppCompatActivity {
                 int id = item.getItemId();
 
                 switch(id){
-                    case R.id.mypage:
+                    case R.id.mypage_menu:
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, profileFragment).commit();
+                        item.setChecked(false);
                         break;
-                    case R.id.posting:
+                    case R.id.posting_menu:
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, postingFragment).commit();
+                        item.setChecked(false);
                         break;
-                    case R.id.logout:
-                        Toast.makeText(getApplicationContext(), "Log out",Toast.LENGTH_LONG).show();
-                        sRequest.requestLogout();
+                    case R.id.logout_menu:
+                        sRequest.requestLogout(MainActivity.this);
+                        item.setChecked(false);
                         break;
-                    case R.id.login:
+                    case R.id.login_menu:
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, logInFragment).commit();
+                        item.setChecked(false);
                         break;
                     default:
                         break;
@@ -147,6 +172,14 @@ public class MainActivity extends AppCompatActivity {
 
         TextView actionBar_title = toolbar.findViewById(R.id.action_bar_title);
         actionBar_title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
+            }
+        });
+
+        ImageView actionBar_icon = toolbar.findViewById(R.id.action_bar_icon);
+        actionBar_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
@@ -180,5 +213,8 @@ public class MainActivity extends AppCompatActivity {
         
         //어플리케이션 기본 배경색 설정
         window.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#E1E2E1")));
+
+        sRequest.requestLoginGet(this);
+
     }
 }
