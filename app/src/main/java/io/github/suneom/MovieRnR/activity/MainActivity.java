@@ -140,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
                 switch(id){
                     case R.id.mypage_menu:
+                        profileFragment.user_id = MyApplication.my_info.my_id;
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, profileFragment).commit();
                         item.setChecked(false);
                         break;
@@ -210,6 +211,5 @@ public class MainActivity extends AppCompatActivity {
         window.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#E1E2E1")));
 
         sRequest.requestLoginGet(this);
-
     }
 }

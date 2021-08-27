@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,7 +29,10 @@ public class ProfileFragment extends Fragment {
 
     TextView profile_title_nickname, id, nickname, gender, biography, id_title;
 
-    int user_id;
+    ScrollView profile_scrollView;
+    ProgressBar profile_progressBar;
+
+    public int user_id;
 
     public ProfileData data;
 
@@ -49,6 +54,7 @@ public class ProfileFragment extends Fragment {
             //로그인이 되어있는데 요청한 정보가 자신의 정보인 경우
             setMyInfo(MyApplication.my_info);
             setSnsOnClickListener();
+            onLoadingFinish();
         }
         else if(MyApplication.my_info != null && MyApplication.my_info.id != user_id){
             //로그인이 되어있는데 요청한 정보가 자신의 정보가 아닌 경우
@@ -140,6 +146,9 @@ public class ProfileFragment extends Fragment {
         instagram = rootView.findViewById(R.id.my_instagram);
         facebook = rootView.findViewById(R.id.my_facebook);
         twitter = rootView.findViewById(R.id.my_twitter);
+
+        profile_scrollView = rootView.findViewById(R.id.profile_scrollview);
+        profile_progressBar = rootView.findViewById(R.id.profile_progressbar);
     }
 
     public void setMyInfo(LoginUserInfo info){
@@ -165,5 +174,10 @@ public class ProfileFragment extends Fragment {
 
         profile_background_imageView.getLayoutParams().height = height;
         profile_background_imageView.requestLayout();
+    }
+
+    public void onLoadingFinish(){
+        profile_progressBar.setVisibility(View.GONE);
+        profile_scrollView.setVisibility(View.VISIBLE);
     }
 }
