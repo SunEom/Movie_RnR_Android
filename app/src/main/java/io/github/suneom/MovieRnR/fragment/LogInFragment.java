@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import io.github.suneom.MovieRnR.R;
+import io.github.suneom.MovieRnR.activity.MainActivity;
 import io.github.suneom.MovieRnR.application.MyApplication;
 import io.github.suneom.MovieRnR.util.sRequest;
 import io.github.suneom.MovieRnR.util.sUtil;
@@ -70,6 +71,7 @@ public class LogInFragment extends Fragment {
                     return;
                 }
 
+                ((MainActivity)getActivity()).startLoading();
                 sRequest.requestLoginPost(id_value, password_value, remember.isChecked(), getActivity());
             }
         });

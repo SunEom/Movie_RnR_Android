@@ -426,7 +426,6 @@ public class sRequest {
                     String url = MyApplication.SERVER_URL+"auth/login";
 
                     okhttp3.Request request = new okhttp3.Request.Builder()
-                            .addHeader("Authorization", Credentials.basic(id, password))
                             .url(url)
                             .post(formBody)
                             .build();
@@ -450,12 +449,19 @@ public class sRequest {
                             Intent intent = new Intent(activity.getApplicationContext(), MainActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             activity.getApplicationContext().startActivity(intent);
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ((MainActivity)activity).finishLoading();
+                                }
+                            });
                         } else {
                             activity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
 //                                sUtil.CreateNewSimpleAlertDialog(activity.getApplicationContext(), "","Please check ID or Password");
                                     Toast.makeText(activity.getApplicationContext(), "Please check ID or Password", Toast.LENGTH_LONG).show();
+                                    ((MainActivity)activity).finishLoading();
                                 }
                             });
                         }
@@ -534,10 +540,9 @@ public class sRequest {
                         @Override
                         public void run() {
                             databaseMethod.deleteLoginInfo();
+                            ((MainActivity)activity).finishLoading();
                             ((MainActivity)activity).setMenuAccessControl();
-                            Intent intent = new Intent(activity.getApplicationContext(), MainActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            activity.getApplicationContext().startActivity(intent);
+                            ((MainActivity) activity).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, MyApplication.homeFragment).commit();
                         }
                     });
 

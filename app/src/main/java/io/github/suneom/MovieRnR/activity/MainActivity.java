@@ -16,11 +16,13 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
     LogInFragment logInFragment;
     ProfileFragment profileFragment;
 
+    LinearLayout progressLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         window = getWindow();
         homeFragment = MyApplication.homeFragment;
         drawer = findViewById(R.id.drawer_layout);
+        progressLayout = findViewById(R.id.main_progress_layout);
 
         postingFragment = new PostingFragment();
         logInFragment = new LogInFragment();
@@ -149,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
                         item.setChecked(false);
                         break;
                     case R.id.logout_menu:
+                        startLoading();
                         sRequest.requestLogout(MainActivity.this);
                         item.setChecked(false);
                         break;
@@ -202,6 +208,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        progressLayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // Status Bar 설정
             window.setStatusBarColor(Color.BLACK);
@@ -211,5 +224,13 @@ public class MainActivity extends AppCompatActivity {
         window.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#E1E2E1")));
 
         sRequest.requestLoginGet(this);
+    }
+
+    public void startLoading(){
+        progressLayout.setVisibility(View.VISIBLE);
+    }
+
+    public void finishLoading(){
+        progressLayout.setVisibility(View.GONE);
     }
 }
