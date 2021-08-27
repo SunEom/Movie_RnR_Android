@@ -5,9 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <ProgressBar
+        android:id="@+id/profile_progressbar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ScrollView
+        android:id="@+id/profile_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,9 +31,9 @@
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_marginTop="30dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="30dp">
 
                 <ImageView
                     android:id="@+id/profile_background_image"
@@ -193,7 +205,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical" >
+                            android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/profile_biography"
@@ -221,15 +233,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="9dp"
-                    android:layout_marginRight="9dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginRight="9dp"
                     android:layout_marginBottom="30dp">
 
                     <ImageView
                         android:id="@+id/my_instagram"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/instagram_icon"/>
+                        app:srcCompat="@drawable/instagram_icon" />
 
                     <ImageView
                         android:id="@+id/my_facebook"
@@ -237,13 +249,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
-                        app:srcCompat="@drawable/facebook_icon"/>
+                        app:srcCompat="@drawable/facebook_icon" />
 
                     <ImageView
                         android:id="@+id/my_twitter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/twitter_icon"/>
+                        app:srcCompat="@drawable/twitter_icon" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

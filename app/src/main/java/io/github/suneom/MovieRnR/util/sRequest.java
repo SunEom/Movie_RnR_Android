@@ -576,6 +576,8 @@ public class sRequest {
                         public void run() {
                             fragment.setInfo(data);
                             fragment.setOtherSnsOnClickListener(data);
+
+                            fragment.onLoadingFinish();
                         }
                     });
 
