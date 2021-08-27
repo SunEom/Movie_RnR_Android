@@ -3,10 +3,14 @@ package io.github.suneom.MovieRnR.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.input.InputManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethod;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
@@ -408,7 +412,7 @@ public class sRequest {
 
     //Authentication 관련 Method
 
-    public static void requestLoginPost(String id, String password, Context context){
+    public static void requestLoginPost(String id, String password, Activity activity){
 
         new Thread(new Runnable() {
 
@@ -442,8 +446,20 @@ public class sRequest {
 
                     MyApplication.setMyInfo(info.data);
 
-                    Intent intent = new Intent(context, MainActivity.class);
-                    context.startActivity(intent);
+                    if(info.data != null){
+                        Intent intent = new Intent(activity.getApplicationContext(), MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        activity.getApplicationContext().startActivity(intent);
+                    } else {
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+//                                sUtil.CreateNewSimpleAlertDialog(activity.getApplicationContext(), "","Please check ID or Password");
+                                Toast.makeText(activity.getApplicationContext(), "Please check ID or Password",Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+
 
                 } catch(Exception e) {
                     e.printStackTrace();
