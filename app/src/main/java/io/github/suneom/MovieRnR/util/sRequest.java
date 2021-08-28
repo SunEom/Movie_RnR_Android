@@ -405,6 +405,42 @@ public class sRequest {
         }).start();
     }
 
+    public static void requestPatchComment(String contents, String posting_id, String comment_id, CommentAdapter adapter, Activity activity){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient.Builder builder= new OkHttpClient.Builder();
+                    builder.cookieJar(myCookieJar);
+                    OkHttpClient client = builder.build();
+
+                    String url = MyApplication.SERVER_URL + "comment/update";
+
+                    FormBody formBody = new FormBody.Builder()
+                            .add("contents", contents)
+                            .add("id", comment_id)
+                            .build();
+
+                    okhttp3.Request request = new okhttp3.Request.Builder()
+                            .url(url)
+                            .patch(formBody)
+                            .build();
+
+                    okhttp3.Response response = client.newCall(request).execute();
+
+                    String result = response.body().string();
+
+                    requestCommentList(adapter,Integer.parseInt(posting_id),activity);
+
+                } catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+
+
     //Authentication 관련 Method
 
     public static void requestLoginPost(String id, String password, boolean shouldRemember, Activity activity){
