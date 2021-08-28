@@ -429,6 +429,8 @@ public class sRequest {
                     okhttp3.Response response = client.newCall(request).execute();
 
                     String result = response.body().string();
+                    Log.d("CODE", String.valueOf(response.code()));
+
 
                     requestCommentList(adapter,Integer.parseInt(posting_id),activity);
 
@@ -439,7 +441,35 @@ public class sRequest {
         }).start();
     }
 
+    public static void requestDeleteComment(String posting_id, String comment_id, CommentAdapter adapter, Activity activity){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient.Builder builder= new OkHttpClient.Builder();
+                    builder.cookieJar(myCookieJar);
+                    OkHttpClient client = builder.build();
 
+                    String url = MyApplication.SERVER_URL + "comment/"+comment_id;
+
+                    okhttp3.Request request = new okhttp3.Request.Builder()
+                            .url(url)
+                            .delete()
+                            .build();
+
+                    okhttp3.Response response = client.newCall(request).execute();
+
+                    String result = response.body().string();
+
+
+                    requestCommentList(adapter,Integer.parseInt(posting_id),activity);
+
+                } catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
 
     //Authentication 관련 Method
 

@@ -1,6 +1,7 @@
 package io.github.suneom.MovieRnR.recycler_view.Adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -157,7 +159,32 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Viewhold
                 delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Context context = v.getContext();
+                        String posting_id = String.valueOf(comment.getMovie_id());
+                        String comment_id = String.valueOf(comment.getId());
 
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+                        builder.setMessage("Do you really want to delete this comment?");
+
+                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        });
+
+                        builder.setPositiveButton("Sure", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                sRequest.requestDeleteComment(posting_id, comment_id, CommentAdapter.this, (MainActivity)context);
+                            }
+                        });
+
+
+                        AlertDialog alertDialog = builder.create();
+
+                        alertDialog.show();
+                        return;
                     }
                 });
             }
