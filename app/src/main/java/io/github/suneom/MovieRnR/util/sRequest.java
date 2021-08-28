@@ -1,6 +1,7 @@
 package io.github.suneom.MovieRnR.util;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentManager;
 
 import com.android.volley.AuthFailureError;
@@ -39,6 +41,7 @@ import io.github.suneom.MovieRnR.custom_class.Profile.ProfileData;
 import io.github.suneom.MovieRnR.custom_class.Profile.ProfileResponse;
 import io.github.suneom.MovieRnR.fragment.DetailFragment;
 import io.github.suneom.MovieRnR.fragment.JoinFragment;
+import io.github.suneom.MovieRnR.fragment.LogInFragment;
 import io.github.suneom.MovieRnR.fragment.ProfileFragment;
 import io.github.suneom.MovieRnR.recycler_view.Adapter.CommentAdapter;
 import io.github.suneom.MovieRnR.recycler_view.Adapter.MovieAdapter;
@@ -525,8 +528,7 @@ public class sRequest {
                             activity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-//                                sUtil.CreateNewSimpleAlertDialog(activity.getApplicationContext(), "","Please check ID or Password");
-                                    Toast.makeText(activity.getApplicationContext(), "Please check ID or Password", Toast.LENGTH_LONG).show();
+                                    ((LogInFragment)((MainActivity) activity).getSupportFragmentManager().findFragmentById(R.id.fragment_container)).showLoginErrorDialog();
                                     ((MainActivity)activity).finishLoading();
                                 }
                             });
