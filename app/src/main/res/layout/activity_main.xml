@@ -39,9 +39,11 @@
                         android:id="@+id/action_bar_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
+                        android:layout_marginRight="10dp"
+                        android:fontFamily="@font/carterone"
+                        android:layout_marginTop="2dp"
                         android:text="MOVIE R&amp;R"
-                        android:textColor="@color/black"
+                        android:textColor="#FFFFFF"
                         android:textSize="21sp"
                         android:textStyle="bold" />
 
@@ -49,16 +51,15 @@
                         android:id="@+id/action_bar_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginRight="15dp"
                         app:srcCompat="@drawable/header_icon" />
 
                     <EditText
                         android:id="@+id/search_keyword_input"
                         android:layout_width="170dp"
-
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="3dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginRight="20dp"
                         android:backgroundTint="#E1E2E1"
                         android:hint="검색"
                         android:imeActionId="1337"
