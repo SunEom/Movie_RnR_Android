@@ -1,5 +1,6 @@
 package io.github.suneom.MovieRnR.recycler_view.Adapter;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import io.github.suneom.MovieRnR.R;
+import io.github.suneom.MovieRnR.activity.MainActivity;
 import io.github.suneom.MovieRnR.application.MyApplication;
 import io.github.suneom.MovieRnR.custom_class.Comment.Comment;
 import io.github.suneom.MovieRnR.fragment.DetailFragment;
 import io.github.suneom.MovieRnR.fragment.ProfileFragment;
+import io.github.suneom.MovieRnR.util.sRequest;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Viewholder> {
 
@@ -120,7 +123,19 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Viewhold
                         save.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                Context context = v.getContext();
+                                String content_value = comment_edit.getText().toString();
+                                String posting_id = String.valueOf(comment.getMovie_id());
+                                String comment_id = String.valueOf(comment.getId());
 
+                                sRequest.requestPatchComment(content_value, posting_id, comment_id,CommentAdapter.this, (MainActivity)context);
+
+                                content.setVisibility(View.VISIBLE);
+                                edit.setVisibility(View.VISIBLE);
+                                delete.setVisibility(View.VISIBLE);
+                                comment_edit.setVisibility(View.GONE);
+                                cancel.setVisibility(View.GONE);
+                                save.setVisibility(View.GONE);
                             }
                         });
 
