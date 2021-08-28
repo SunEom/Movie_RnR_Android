@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="my_array">
+    <string-array name="my_profile_menu_array">
         <item>Basic Information</item>
         <item>Edit Profile</item>
         <item>Change Password</item>
         <item>View Postings</item>
         <item>Danger Zone</item>
+    </string-array>
+
+    <string-array name="other_profile_menu_array">
+        <item>Basic Information</item>
+        <item>View Postings</item>
     </string-array>
 </resources>

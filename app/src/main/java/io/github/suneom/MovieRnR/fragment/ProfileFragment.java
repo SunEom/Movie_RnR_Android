@@ -1,9 +1,6 @@
 package io.github.suneom.MovieRnR.fragment;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +10,13 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import java.util.ArrayList;
 
 import io.github.suneom.MovieRnR.R;
 import io.github.suneom.MovieRnR.activity.MainActivity;
@@ -26,6 +24,10 @@ import io.github.suneom.MovieRnR.application.MyApplication;
 import io.github.suneom.MovieRnR.custom_class.Login.LoginUserInfo;
 import io.github.suneom.MovieRnR.custom_class.Profile.ProfileData;
 import io.github.suneom.MovieRnR.fragment.Profile.BasicInfoFragment;
+import io.github.suneom.MovieRnR.fragment.Profile.DangerZoneFragment;
+import io.github.suneom.MovieRnR.fragment.Profile.EditInfoFragment;
+import io.github.suneom.MovieRnR.fragment.Profile.ProfilePostingFragment;
+import io.github.suneom.MovieRnR.fragment.Profile.PasswordChangeFragment;
 import io.github.suneom.MovieRnR.util.sRequest;
 
 public class ProfileFragment extends Fragment {
@@ -40,6 +42,12 @@ public class ProfileFragment extends Fragment {
     ProgressBar profile_progressBar;
 
     BasicInfoFragment basicInfoFragment = new BasicInfoFragment();
+    EditInfoFragment editInfoFragment = new EditInfoFragment();
+    PasswordChangeFragment passwordChangeFragment = new PasswordChangeFragment();
+    ProfilePostingFragment profilePostingFragment = new ProfilePostingFragment();
+    DangerZoneFragment dangerZoneFragment = new DangerZoneFragment();
+
+    ArrayList<Fragment> fragments = new ArrayList<Fragment>();
 
     public int user_id;
 
@@ -64,8 +72,7 @@ public class ProfileFragment extends Fragment {
             setProfileTitleNickname(this.data.nickname);
             initFragmentContainer();
             onLoadingFinish();
-        }
-        else if(MyApplication.my_info != null && MyApplication.my_info.id != user_id){
+        } else if(MyApplication.my_info != null && MyApplication.my_info.id != user_id){
             //로그인이 되어있는데 요청한 정보가 자신의 정보가 아닌 경우
             sRequest.requestProfileData(user_id, this);
         } else if(MyApplication.my_info == null){
@@ -73,21 +80,34 @@ public class ProfileFragment extends Fragment {
             sRequest.requestProfileData(user_id, this);
         }
 
-
-
         return rootView;
     }
 
     public void initViewitems(){
+        String[] spinnerItems;
+
+        if(MyApplication.my_info != null && MyApplication.my_info.id == user_id){
+            fragments.add(basicInfoFragment);
+            fragments.add(editInfoFragment);
+            fragments.add(passwordChangeFragment);
+            fragments.add(profilePostingFragment);
+            fragments.add(dangerZoneFragment);
+
+            spinnerItems = getResources().getStringArray(R.array.my_profile_menu_array);
+        } else {
+            fragments.add(basicInfoFragment);
+            fragments.add(profilePostingFragment);
+            spinnerItems = getResources().getStringArray(R.array.other_profile_menu_array);
+        }
+
         spinner = rootView.findViewById(R.id.profile_spinner);
-        String[] spinnerItems = getResources().getStringArray(R.array.my_array);
         spinnerAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, spinnerItems);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("Spinner",String.valueOf(position));
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.profile_fragment_container, fragments.get(position)).commit();
             }
 
             @Override
@@ -125,11 +145,14 @@ public class ProfileFragment extends Fragment {
         LoginUserInfo myData = MyApplication.my_info;
         data = new ProfileData(myData.biography,myData.facebook,myData.gender,myData.id,myData.instagram, myData.nickname, myData.twitter);
         basicInfoFragment.data = data;
+        editInfoFragment.data = data;
+        profilePostingFragment.user_id = data.id;
     }
 
     public void setInfo(ProfileData info){
         data = info;
         basicInfoFragment.data = info;
+        profilePostingFragment.user_id = info.id;
     }
 
     public void initFragmentContainer(){

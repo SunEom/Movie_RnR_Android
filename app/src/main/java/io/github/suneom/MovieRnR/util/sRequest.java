@@ -1,8 +1,10 @@
 package io.github.suneom.MovieRnR.util;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,6 +40,7 @@ import io.github.suneom.MovieRnR.custom_class.Login.LoginResponse;
 import io.github.suneom.MovieRnR.custom_class.Movie.Movie;
 import io.github.suneom.MovieRnR.custom_class.Movie.MovieData;
 import io.github.suneom.MovieRnR.custom_class.Movie.PostReqResult;
+import io.github.suneom.MovieRnR.custom_class.Profile.PasswordResponse;
 import io.github.suneom.MovieRnR.custom_class.Profile.ProfileData;
 import io.github.suneom.MovieRnR.custom_class.Profile.ProfileResponse;
 import io.github.suneom.MovieRnR.fragment.DetailFragment;
@@ -276,6 +279,40 @@ public class sRequest {
                 }
             }
         }).start();
+    }
+
+    public static void requestMyPostings(int user_id, MovieAdapter adapter, Activity activity){
+        StringRequest request = new StringRequest(Request.Method.GET, MyApplication.SERVER_URL+"post/user/"+ String.valueOf(user_id)
+                , new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                Gson gson = new Gson();
+                PostReqResult result = gson.fromJson(response, PostReqResult.class);
+
+                Log.d("LOG",response);
+
+                if(result.code == 200){
+                    for(int i=0; i<result.data.size(); i++){
+                        MovieData data = result.data.get(i);
+                        adapter.addItem(new Movie(data.id, data.title, data.genres, data.overview, data.rates, data.commentCount));
+                    }
+                    adapter.notifyDataSetChanged();
+
+                    activity.findViewById(R.id.profile_postings_progressbar).setVisibility(View.GONE);
+                    activity.findViewById(R.id.profile_postings_recyclerview).setVisibility(View.VISIBLE);
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG,"ERROR!! : " + error.getMessage());
+            }
+        });
+
+        request.setShouldCache(false);
+        MyApplication.requestQueue.add(request);
     }
 
     public static void requestPatchPosting(String title, String genres, String rates, String overview, int movieId, FragmentManager manager){
@@ -666,6 +703,97 @@ public class sRequest {
                     e.printStackTrace();
                 }
 
+            }
+        }).start();
+    }
+
+    public static void requestPatchPassword(String password, String newPassword, Context context){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient.Builder builder = new OkHttpClient.Builder();
+                    builder.cookieJar(myCookieJar);
+                    OkHttpClient client = builder.build();
+
+                    String url = MyApplication.SERVER_URL+"user/password";
+
+                    FormBody formBody = new FormBody.Builder()
+                            .add("password",password)
+                            .add("newPassword",newPassword)
+                            .build();
+
+                    okhttp3.Request request = new okhttp3.Request.Builder()
+                            .url(url)
+                            .post(formBody)
+                            .build();
+
+                    okhttp3.Response response = client.newCall(request).execute();
+
+                    String result = response.body().string();
+
+                    Gson gson = new Gson();
+                    PasswordResponse info =  gson.fromJson(result, PasswordResponse.class);
+
+                    if(info.code == 200){
+                        Cursor cursor = MyApplication.database.rawQuery("select id, password from users order by _id DESC limit 1",null);
+                        if(cursor.getCount()!=0){
+                            String id = cursor.getString(0);
+                            databaseMethod.deleteLoginInfo();
+                            databaseMethod.insertLoginInfo(id, password);
+                        }
+                    } else {
+                        ((MainActivity)context).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                sUtil.CreateNewSimpleAlertDialog(context,"", info.error);
+                            }
+                        });
+                    }
+
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+    public static void requestDeleteAccount(Context context){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient.Builder builder = new OkHttpClient.Builder();
+                    builder.cookieJar(myCookieJar);
+                    OkHttpClient client = builder.build();
+
+                    String url = MyApplication.SERVER_URL+"user";
+
+                    okhttp3.Request request = new okhttp3.Request.Builder()
+                            .url(url)
+                            .delete()
+                            .build();
+
+                    okhttp3.Response response = client.newCall(request).execute();
+
+                    String result = response.body().string();
+
+                    Gson gson = new Gson();
+                    PasswordResponse info =  gson.fromJson(result, PasswordResponse.class);
+
+                    if(info.code == 200){
+                        databaseMethod.deleteLoginInfo();
+                    } else {
+                        ((MainActivity)context).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                sUtil.CreateNewSimpleAlertDialog(context,"", info.error);
+                            }
+                        });
+                    }
+
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
             }
         }).start();
     }
