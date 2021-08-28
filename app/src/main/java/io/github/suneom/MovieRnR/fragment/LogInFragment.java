@@ -87,4 +87,8 @@ public class LogInFragment extends Fragment {
 
         return rootView;
     }
+
+    public void showLoginErrorDialog(){
+            sUtil.CreateNewSimpleAlertDialog(getContext(), "","Please check ID or Password");
+    }
 }
