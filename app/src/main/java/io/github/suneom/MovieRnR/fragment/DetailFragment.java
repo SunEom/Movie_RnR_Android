@@ -1,10 +1,12 @@
 package io.github.suneom.MovieRnR.fragment;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -20,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import io.github.suneom.MovieRnR.R;
+import io.github.suneom.MovieRnR.activity.MainActivity;
 import io.github.suneom.MovieRnR.application.MyApplication;
 import io.github.suneom.MovieRnR.custom_class.Detail.PostingOwner;
 import io.github.suneom.MovieRnR.custom_class.Movie.MovieData;
@@ -109,25 +112,14 @@ public class DetailFragment extends Fragment {
         comment_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(comment_input.getText() == null || comment_input.getText().toString().equals("")){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
-                    builder.setMessage("댓글을 입력해주세요!");
-                    builder.setNeutralButton("확인", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    });
-
-                    AlertDialog alertDialog = builder.create();
-
-                    alertDialog.show();
-                    return;
+                if(comment_input.getText() == null || comment_input.getText().toString().equals("")) {
+                    sUtil.CreateNewSimpleAlertDialog(getContext(), "", "댓글을 입력해주세요!");
                 }
 
                 String content = comment_input.getText().toString();
                 sRequest.requestNewComment(content, String.valueOf(movieId),adapter, getActivity());
                 comment_input.setText("");
+                ((InputMethodManager)((MainActivity)v.getContext()).getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(comment_input.getWindowToken(), 0);
             }
         });
 

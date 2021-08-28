@@ -3,6 +3,7 @@ package io.github.suneom.MovieRnR.recycler_view.Adapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -118,6 +119,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Viewhold
                         delete.setVisibility(View.GONE);
                         comment_edit.setVisibility(View.VISIBLE);
                         comment_edit.setText(content.getText().toString());
+                        comment_edit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                            @Override
+                            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                                save.performClick();
+                                return false;
+                            }
+                        });
                         cancel.setVisibility(View.VISIBLE);
                         save.setVisibility(View.VISIBLE);
 
