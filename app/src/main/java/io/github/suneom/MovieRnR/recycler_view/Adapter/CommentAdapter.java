@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -66,12 +68,21 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Viewhold
 
     public class Viewholder extends RecyclerView.ViewHolder{
         TextView commenter, content;
+        Button edit, delete, cancel, save;
+        EditText comment_edit;
 
         public Viewholder(@NonNull View itemView) {
             super(itemView);
 
             commenter = itemView.findViewById(R.id.comment_commenter);
             content = itemView.findViewById(R.id.comment_content);
+
+            edit = itemView.findViewById(R.id.comment_edit_button);
+            delete = itemView.findViewById(R.id.comment_delete_button);
+            cancel = itemView.findViewById(R.id.comment_edit_cancel_button);
+            save = itemView.findViewById(R.id.comment_save_button);
+
+            comment_edit = itemView.findViewById(R.id.comment_edit_input);
         }
 
         public void setItem(Comment comment){
@@ -89,6 +100,52 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Viewhold
                     manager.beginTransaction().replace(R.id.fragment_container,profileFragment).commit();
                 }
             });
+
+            if(MyApplication.my_info != null && MyApplication.my_info.my_id == comment.getCommenter()){
+                edit.setVisibility(View.VISIBLE);
+                delete.setVisibility(View.VISIBLE);
+
+                edit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        content.setVisibility(View.GONE);
+                        edit.setVisibility(View.GONE);
+                        delete.setVisibility(View.GONE);
+                        comment_edit.setVisibility(View.VISIBLE);
+                        comment_edit.setText(content.getText().toString());
+                        cancel.setVisibility(View.VISIBLE);
+                        save.setVisibility(View.VISIBLE);
+
+                        // 댓글 수정 저장을 위한 Listener
+                        save.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                            }
+                        });
+
+                        // 댓글 수정 취소를 위한 Listener
+                        cancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                content.setVisibility(View.VISIBLE);
+                                edit.setVisibility(View.VISIBLE);
+                                delete.setVisibility(View.VISIBLE);
+                                comment_edit.setVisibility(View.GONE);
+                                cancel.setVisibility(View.GONE);
+                                save.setVisibility(View.GONE);
+                            }
+                        });
+                    }
+                });
+
+                delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+            }
         }
     }
 }

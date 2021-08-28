@@ -58,7 +58,7 @@
                     android:textColor="@color/black" />
 
                 <EditText
-                    android:id="@+id/editTextTextPersonName"
+                    android:id="@+id/comment_edit_input"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -88,9 +88,20 @@
                     android:visibility="gone" />
 
                 <Button
-                    android:id="@+id/button"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:id="@+id/comment_save_button"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="7dp"
+                    android:layout_marginRight="7dp"
+                    android:background="@drawable/comment_save_icon"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/comment_edit_cancel_button"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="7dp"
+                    android:layout_marginRight="7dp"
                     android:background="@drawable/comment_cancel_icon"
                     android:visibility="gone" />
 
