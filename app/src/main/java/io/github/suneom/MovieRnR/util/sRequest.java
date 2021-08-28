@@ -3,6 +3,7 @@ package io.github.suneom.MovieRnR.util;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -42,6 +43,7 @@ import io.github.suneom.MovieRnR.custom_class.Profile.ProfileResponse;
 import io.github.suneom.MovieRnR.fragment.DetailFragment;
 import io.github.suneom.MovieRnR.fragment.JoinFragment;
 import io.github.suneom.MovieRnR.fragment.LogInFragment;
+import io.github.suneom.MovieRnR.fragment.Profile.BasicInfoFragment;
 import io.github.suneom.MovieRnR.fragment.ProfileFragment;
 import io.github.suneom.MovieRnR.recycler_view.Adapter.CommentAdapter;
 import io.github.suneom.MovieRnR.recycler_view.Adapter.MovieAdapter;
@@ -648,14 +650,15 @@ public class sRequest {
 
                     ProfileData data = info.data.get(0);
 
-
                     fragment.getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            fragment.setInfo(data);
-                            fragment.setOtherSnsOnClickListener(data);
-
-                            fragment.onLoadingFinish();
+                            if(data != null){
+                                fragment.setInfo(data);
+                                fragment.setProfileTitleNickname(data.nickname);
+                                fragment.initFragmentContainer();
+                                fragment.onLoadingFinish();
+                            }
                         }
                     });
 

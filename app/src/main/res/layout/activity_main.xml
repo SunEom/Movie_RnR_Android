@@ -61,7 +61,7 @@
                         android:layout_marginLeft="3dp"
                         android:layout_marginRight="20dp"
                         android:backgroundTint="#E1E2E1"
-                        android:hint="검색"
+                        android:hint="Search"
                         android:imeActionId="1337"
                         android:imeOptions="actionDone"
                         android:inputType="text" />

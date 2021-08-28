@@ -7,9 +7,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,24 +21,29 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import io.github.suneom.MovieRnR.R;
+import io.github.suneom.MovieRnR.activity.MainActivity;
 import io.github.suneom.MovieRnR.application.MyApplication;
 import io.github.suneom.MovieRnR.custom_class.Login.LoginUserInfo;
 import io.github.suneom.MovieRnR.custom_class.Profile.ProfileData;
+import io.github.suneom.MovieRnR.fragment.Profile.BasicInfoFragment;
 import io.github.suneom.MovieRnR.util.sRequest;
 
 public class ProfileFragment extends Fragment {
     View rootView;
 
-    ImageView profile_background_imageView, instagram, facebook, twitter;
+    ImageView profile_background_imageView;
+    TextView profile_title_nickname;
 
-    TextView profile_title_nickname, id, nickname, gender, biography, id_title;
-
+    Spinner spinner;
+    ArrayAdapter spinnerAdapter;
     ScrollView profile_scrollView;
     ProgressBar profile_progressBar;
 
+    BasicInfoFragment basicInfoFragment = new BasicInfoFragment();
+
     public int user_id;
 
-    public ProfileData data;
+    ProfileData data;
 
     @Nullable
     @Override
@@ -49,11 +58,11 @@ public class ProfileFragment extends Fragment {
             user_id = bundle.getInt("id", -1);
         }
 
-
         if(MyApplication.my_info != null && MyApplication.my_info.id == user_id){
-            //로그인이 되어있는데 요청한 정보가 자신의 정보인 경우
-            setMyInfo(MyApplication.my_info);
-            setSnsOnClickListener();
+            //로그인 되어있고 요청한 정보가 자신의 정보인 경우
+            setMyInfo();
+            setProfileTitleNickname(this.data.nickname);
+            initFragmentContainer();
             onLoadingFinish();
         }
         else if(MyApplication.my_info != null && MyApplication.my_info.id != user_id){
@@ -65,107 +74,37 @@ public class ProfileFragment extends Fragment {
         }
 
 
+
         return rootView;
     }
 
-    public void setSnsOnClickListener(){
-
-        instagram.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url = MyApplication.my_info.instagram;
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
-            }
-        });
-
-        facebook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url = MyApplication.my_info.facebook;
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
-            }
-        });
-
-        twitter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url = MyApplication.my_info.twitter;
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
-            }
-        });
-    }
-
-    public void setOtherSnsOnClickListener(ProfileData data){
-
-        instagram.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url = data.instagram;
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
-            }
-        });
-
-        facebook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url = data.facebook;
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
-            }
-        });
-
-        twitter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url = data.twitter;
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
-            }
-        });
-    }
-
-
     public void initViewitems(){
+        spinner = rootView.findViewById(R.id.profile_spinner);
+        String[] spinnerItems = getResources().getStringArray(R.array.my_array);
+        spinnerAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, spinnerItems);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(spinnerAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("Spinner",String.valueOf(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
         profile_background_imageView = rootView.findViewById(R.id.profile_background_image);
-        profile_title_nickname = rootView.findViewById(R.id.profile_title_nickname);
-        id = rootView.findViewById(R.id.profile_id);
-        nickname = rootView.findViewById(R.id.profile_nickname);
-        gender = rootView.findViewById(R.id.profile_gender);
-        biography = rootView.findViewById(R.id.profile_biography);
-        id_title = rootView.findViewById(R.id.profile_id_title);
-        instagram = rootView.findViewById(R.id.my_instagram);
-        facebook = rootView.findViewById(R.id.my_facebook);
-        twitter = rootView.findViewById(R.id.my_twitter);
 
         profile_scrollView = rootView.findViewById(R.id.profile_scrollview);
         profile_progressBar = rootView.findViewById(R.id.profile_progressbar);
+
+        profile_title_nickname = rootView.findViewById(R.id.profile_title_nickname);
     }
 
-    public void setMyInfo(LoginUserInfo info){
-        profile_title_nickname.setText(info.getNickname());
-        id.setText(info.getUser_id());
-        nickname.setText(info.getNickname());
-        gender.setText(info.getGender());
-        biography.setText(info.getBiography());
-    }
-
-    public void setInfo(ProfileData info){
-        profile_title_nickname.setText(info.nickname);
-        nickname.setText(info.nickname);
-        gender.setText(info.gender);
-        biography.setText(info.biography);
-        id.setVisibility(View.GONE);
-        id_title.setVisibility(View.GONE);
+    public void setProfileTitleNickname(String nickname){
+        profile_title_nickname.setText(nickname);
     }
 
     public void setBackgroundImageSize(){
@@ -179,5 +118,21 @@ public class ProfileFragment extends Fragment {
     public void onLoadingFinish(){
         profile_progressBar.setVisibility(View.GONE);
         profile_scrollView.setVisibility(View.VISIBLE);
+    }
+
+
+    public void setMyInfo(){
+        LoginUserInfo myData = MyApplication.my_info;
+        data = new ProfileData(myData.biography,myData.facebook,myData.gender,myData.id,myData.instagram, myData.nickname, myData.twitter);
+        basicInfoFragment.data = data;
+    }
+
+    public void setInfo(ProfileData info){
+        data = info;
+        basicInfoFragment.data = info;
+    }
+
+    public void initFragmentContainer(){
+        ((MainActivity)getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.profile_fragment_container, basicInfoFragment).commit();
     }
 }
